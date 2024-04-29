@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
   phoneNo: Yup.string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required(),
-  // images: Yup.array().min(1, "Select At-least one image").required(),
+  images: Yup.array().min(1, "Select At-least one image").required(),
 });
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -29,29 +29,46 @@ const SoftwareHouseProfile = () => {
 
   const [selectedRole, setSelectedRole] = useState(0);
 
-  const { values, errors, handleChange, handleSubmit, touched } = useFormik({
-    initialValues: {
-      email: "",
-      companyName: "",
-      ownerName: "",
-      address: "",
-      phoneNo: "",
-      images: [],
-    },
-    validationSchema: validationSchema,
-    onSubmit:  (values) => {
-      console.log(values);
-      // try {
-      //   const result = await axios.post(`${BASE_URL}profile/software`, {
-      //     ...values,
-      //   });
-      //   toast.success(result.data.message);
-      // } catch (err) {
-      //   console.log(err);
-      //   toast.error(err.response.data.message);
-      // }
-    },
-  });
+  const { values, errors, handleChange, handleSubmit, touched, setFieldValue } =
+    useFormik({
+      initialValues: {
+        email: "",
+        companyName: "",
+        ownerName: "",
+        address: "",
+        phoneNo: "",
+        images: [],
+      },
+      validationSchema: validationSchema,
+      onSubmit: async (values) => {
+        const formData = new FormData();
+        formData.append("email", values.email)
+        formData.append("companyName", values.companyName);
+        formData.append("ownerName", values.ownerName);
+        formData.append("address", values.address);
+        formData.append("phoneNo", values.phoneNo);
+        formData.append("companyProfile", values.images);
+
+        try {
+          console.log(formData.get("companyProfile"));
+          let result = await fetch(`${BASE_URL}profile/software`, {
+            method: "POST",
+           
+            body: formData,
+          });
+          result = await result.json();
+          const { message, data, status } = result;
+          if(status === 400){
+            toast.error(message);
+            return
+          }
+          toast.success(message);
+        } catch (err) {
+          console.log(err);
+          toast.error(err.response.data.message);
+        }
+      },
+    });
 
   const handleImageChange = (e) => {
     console.log(e);
@@ -163,7 +180,7 @@ const SoftwareHouseProfile = () => {
             ) : null}
           </div>
 
-          {/* <div class="mb-5">
+          <div class="mb-5">
             <label
               for="images"
               class="block mb-2 text-sm font-medium text-gray-900"
@@ -176,14 +193,14 @@ const SoftwareHouseProfile = () => {
               handleDeleteImage={handleDeleteImage}
             />
             {touched.images && <ErrorMessage error={errors.images} />}
-          </div> */}
+          </div>
           {/* <input type="file" onChange={(e) => console.log(e)}/> */}
 
           <button
             type="submit"
             class="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-5"
           >
-            {isLoading ? "updating...":"update"}
+            {isLoading ? "updating..." : "update"}
           </button>
         </form>
       </div>

@@ -38,7 +38,7 @@ function ImageUploader({ handleImageChange, images,handleDeleteImage }) {
             name="images"
             ref={imgRef}
             multiple
-            accept="image/*"
+            accept="image/jpg image/png image/jpeg"
             onChange={(e) => {
               console.log(e);
               handleImageChange(e)

@@ -7,6 +7,8 @@ import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../../redux/slices/Auth";
 import { toast } from "react-toastify";
+import AvatarLogo from "../../assets/images/avatar.png";
+import axios from "axios";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("firstName is required"),
@@ -18,10 +20,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const ROLE = ["Student", "Investor", "Software house"];
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Signup = () => {
   const [createUser, { isLoading }] = useCreateUserMutation();
   const [selectedRole, setSelectedRole] = useState(0);
+  const [profileImage, setProfileImage] = useState(null); // State to hold the selected profile image
+
   const navigate = useNavigate();
   const { values, errors, handleChange, handleSubmit, touched } = useFormik({
     initialValues: {
@@ -32,27 +37,39 @@ const Signup = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      // if (ROLE[selectedRole] === "Software house") {
-      //   navigate(PATH.SOFTWAREHOUSE);
-      // }
+      const formData = new FormData();
+      formData.append("firstName", values.firstName);
+      formData.append("lastName", values.lastName);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("role", ROLE[selectedRole]);
 
+      // If profileImage exists, append it to the FormData
+      if (profileImage) {
+        formData.append("profileImage", profileImage);
+      }
+      console.log(formData.get("firstName"));
       try {
-        const { message, data } = await createUser({
-          ...values,
-          role: ROLE[selectedRole],
-        }).unwrap();
+        let result = await fetch(`${BASE_URL}signup`, {
+          method: "POST",
+          body: formData,
+        });
+        result = await result.json();
+        const { message, data } = result;
         toast.success(message);
         if (data.role === "Software house") {
           navigate(PATH.SOFTWAREHOUSE);
         }
       } catch (err) {
-        toast.error(err.data.message);
+        console.log(err);
+        toast.error(err.response.data.message);
       }
     },
   });
 
-  const handleRole = (role) => {
-    setSelectedRole(role);
+  const handleImageChange = (e) => {
+    const imageFile = e.target.files[0];
+    setProfileImage(imageFile);
   };
 
   return (
@@ -60,6 +77,17 @@ const Signup = () => {
       <div className=" w-full">
         <h1 className="text-center font-bold text-xl">Signup</h1>
         <form onSubmit={handleSubmit}>
+          <div className="flex justify-center items-center">
+            {profileImage ? (
+              <img
+                src={URL.createObjectURL(profileImage)} // Create a URL for the selected image
+                alt="Profile Preview"
+                className="mt-2 rounded-full w-16 h-16 object-cover "
+              />
+            ) : (
+              <img src={AvatarLogo} className="w-16 h-16" />
+            )}
+          </div>
           <div className="mb-5">
             <label htmlFor="email" className="block mb-2 text-sm font-medium">
               First Name
@@ -131,6 +159,22 @@ const Signup = () => {
             {touched.password && errors.password ? (
               <ErrorMessage error={errors.password} />
             ) : null}
+          </div>
+
+          <div className="mb-5">
+            <label
+              htmlFor="image"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Profile Pic
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              className="outline-none text-gray-900 text-sm rounded-lg block w-full p-2"
+              onChange={handleImageChange}
+            />
           </div>
 
           <div className="mb-5">
