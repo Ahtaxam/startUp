@@ -47,8 +47,9 @@ const SoftwareHouseProfile = () => {
         formData.append("ownerName", values.ownerName);
         formData.append("address", values.address);
         formData.append("phoneNo", values.phoneNo);
-        formData.append("companyProfile", values.images);
-
+        values.images.forEach((image, index) => {
+          formData.append(`companyProfile${index}`, image);
+      });
         try {
           console.log(formData.get("companyProfile"));
           let result = await fetch(`${BASE_URL}profile/software`, {
