@@ -9,6 +9,7 @@ import { useCreateUserMutation } from "../../redux/slices/Auth";
 import { toast } from "react-toastify";
 import AvatarLogo from "../../assets/images/avatar.png";
 import axios from "axios";
+import { storeCurrentUser } from "../../utils/storeUser";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("firstName is required"),
@@ -55,10 +56,15 @@ const Signup = () => {
           body: formData,
         });
         result = await result.json();
-        const { message, data } = result;
+        const { message, data, token } = result;
         toast.success(message);
+        console.log(data, token);
+        storeCurrentUser({...data, token})
         if (data.role === "Software house") {
           navigate(PATH.SOFTWAREHOUSE);
+        }
+        if (data.role === "Student") {
+          navigate(PATH.LOGIN);
         }
       } catch (err) {
         console.log(err);

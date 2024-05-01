@@ -6,6 +6,9 @@ import Login from "../screens/Auth/Login";
 import AuthLayout from "../screens/Auth/Layout";
 import Signup from "../screens/Auth/Signup";
 import SoftwareHouseProfile from "../screens/Profile/Software";
+import SoftwareHouseHome from "../screens/softwarehouse/home";
+import RootLayout from "../screens";
+import Jobdetail from "../components/Jobdetail";
 
 function AppRoute() {
   return (
@@ -38,6 +41,15 @@ function AppRoute() {
           }
           path={PATH.SOFTWAREHOUSE}
         />
+
+          <Route
+            element={<SoftwareHouseHome />}
+            path={PATH.SOFTWAREHOUSEHOME}
+          />
+           <Route
+            element={<Jobdetail />}
+            path={PATH.JOBDETAIL}
+          />
       </Routes>
     </div>
   );

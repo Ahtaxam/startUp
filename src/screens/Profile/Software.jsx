@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PATH } from "../../utils/Path";
 import { useFormik } from "formik";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -8,6 +8,7 @@ import ImageUploader from "../../components/ImageUploader";
 import { useSoftwareHouseCompleteProfileMutation } from "../../redux/slices/Auth";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { storeCurrentUser } from "../../utils/storeUser";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -28,6 +29,7 @@ const SoftwareHouseProfile = () => {
     useSoftwareHouseCompleteProfileMutation();
 
   const [selectedRole, setSelectedRole] = useState(0);
+  const navigate = useNavigate();
 
   const { values, errors, handleChange, handleSubmit, touched, setFieldValue } =
     useFormik({
@@ -42,26 +44,30 @@ const SoftwareHouseProfile = () => {
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         const formData = new FormData();
-        formData.append("email", values.email)
+        formData.append("email", values.email);
         formData.append("companyName", values.companyName);
         formData.append("ownerName", values.ownerName);
         formData.append("address", values.address);
         formData.append("phoneNo", values.phoneNo);
         values.images.forEach((image, index) => {
           formData.append(`companyProfile${index}`, image);
-      });
+        });
         try {
-          console.log(formData.get("companyProfile"));
           let result = await fetch(`${BASE_URL}profile/software`, {
             method: "POST",
-           
+
             body: formData,
           });
           result = await result.json();
-          const { message, data, status } = result;
-          if(status === 400){
+          const { message, data, status, token } = result;
+          // console.log(data, status, token);
+          if (status === 400) {
             toast.error(message);
-            return
+            return;
+          }
+          storeCurrentUser({ ...data, token });
+          if (data?.role === "Software house") {
+            navigate(PATH.SOFTWAREHOUSEHOME);
           }
           toast.success(message);
         } catch (err) {
