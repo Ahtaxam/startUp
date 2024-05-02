@@ -52,15 +52,15 @@ const CreateJob = ({ setOpenModal }) => {
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         console.log(values);
-        // try {
-        //   const { message, data } = await createJob(values).unwrap();
-        //   toast.success(message);
-        //   setOpenModal();
-        //   dispatch(createJobApi.util.invalidateTags(["createdJob"]));
-        // } catch (err) {
-        //   console.log(err);
-        //   toast.error("Internal Server Error");
-        // }
+        try {
+          const { message, data } = await createJob(values).unwrap();
+          toast.success(message);
+          setOpenModal();
+          dispatch(createJobApi.util.invalidateTags(["createdJob"]));
+        } catch (err) {
+          console.log(err);
+          toast.error("Internal Server Error");
+        }
       },
     });
 

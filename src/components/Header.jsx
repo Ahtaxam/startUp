@@ -1,10 +1,36 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import Logo from "../assets/icons/logo.svg";
-import { getCurrentUser } from "../utils/storeUser";
+import { getCurrentUser, logoutUser } from "../utils/storeUser";
+import { Link, useNavigate } from "react-router-dom";
+import { PATH } from "../utils/Path";
+
+const HEADER = [
+  {
+    label: "Home",
+    studentPath: PATH.STUDENTHOME,
+    softwareHouse: PATH.SOFTWAREHOUSEHOME,
+  },
+  {
+    label: "Projects",
+    studentPath: null,
+    softwareHouse: PATH.PROJECTS,
+  },
+  {
+    label: "Jobs",
+    studentPath: PATH.JOBS,
+    softwareHouse: null,
+  },
+];
 
 export function Header() {
   const user = getCurrentUser();
-  console.log(user);
+  const navigate = useNavigate();
+  const { firstName, lastName, role, email, profileImage } = user;
+
+  const handleLogout = () => {
+    logoutUser();
+    navigate("/");
+  };
   return (
     <Navbar fluid rounded className="shadow">
       <Navbar.Brand href="https://flowbite-react.com">
@@ -14,30 +40,51 @@ export function Header() {
         <Dropdown
           arrowIcon={false}
           inline
-          label={
-            <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
-          }
+          label={<Avatar alt="User settings" img={profileImage} rounded />}
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+            <span className="block text-sm">
+              {" "}
+              {firstName + " " + lastName}{" "}
+            </span>
+            <span className="block truncate text-sm font-medium">{email}</span>
           </Dropdown.Header>
           <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
+          <Dropdown.Item>
+            <Link
+              to={
+                role === "Student"
+                  ? PATH.UPDATESTUDENTPROFILE
+                  : PATH.UPDATESOFTWAREPROFILE
+              }
+            >
+              {" "}
+              Update Profile
+            </Link>
+          </Dropdown.Item>
           <Dropdown.Item>Earnings</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item
+            className="text-red-600 font-bold"
+            onClick={handleLogout}
+          >
+            Sign out
+          </Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link href="#" active>
+        <Link
+          to={role === "Student" ? PATH.STUDENTHOME : PATH.SOFTWAREHOUSEHOME}
+          active
+        >
           Home
-        </Navbar.Link>
-        <Navbar.Link href="#">Projects</Navbar.Link>
-        {/* <Navbar.Link href="#">Services</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Contact</Navbar.Link> */}
+        </Link>
+        {role === "Student" ? (
+          <Link to={PATH.JOBS}>Jobs</Link>
+        ) : (
+          <Link to={PATH.PROJECTS}>Projects</Link>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

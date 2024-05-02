@@ -15,6 +15,14 @@ export const authApi = createApi({
       }),
     }),
 
+    loginUser: builder.mutation({
+      query: (data) => ({
+        url: "/login",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     softwareHouseCompleteProfile: builder.mutation({
       query: (data) => ({
         url: "/profile/software",
@@ -28,4 +36,5 @@ export const authApi = createApi({
 export const {
   useCreateUserMutation,
   useSoftwareHouseCompleteProfileMutation,
+  useLoginUserMutation
 } = authApi;

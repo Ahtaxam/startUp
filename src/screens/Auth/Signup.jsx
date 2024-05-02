@@ -38,28 +38,15 @@ const Signup = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      const formData = new FormData();
-      formData.append("firstName", values.firstName);
-      formData.append("lastName", values.lastName);
-      formData.append("email", values.email);
-      formData.append("password", values.password);
-      formData.append("role", ROLE[selectedRole]);
-
-      // If profileImage exists, append it to the FormData
-      if (profileImage) {
-        formData.append("profileImage", profileImage);
-      }
-      console.log(formData.get("firstName"));
       try {
-        let result = await fetch(`${BASE_URL}signup`, {
-          method: "POST",
-          body: formData,
-        });
-        result = await result.json();
+        const result = await createUser({
+          ...values,
+          role: ROLE[selectedRole],
+        }).unwrap();
         const { message, data, token } = result;
         toast.success(message);
         console.log(data, token);
-        storeCurrentUser({...data, token})
+        storeCurrentUser({ ...data, token });
         if (data.role === "Software house") {
           navigate(PATH.SOFTWAREHOUSE);
         }
@@ -83,7 +70,7 @@ const Signup = () => {
       <div className=" w-full">
         <h1 className="text-center font-bold text-xl">Signup</h1>
         <form onSubmit={handleSubmit}>
-          <div className="flex justify-center items-center">
+          {/* <div className="flex justify-center items-center">
             {profileImage ? (
               <img
                 src={URL.createObjectURL(profileImage)} // Create a URL for the selected image
@@ -93,7 +80,7 @@ const Signup = () => {
             ) : (
               <img src={AvatarLogo} className="w-16 h-16" />
             )}
-          </div>
+          </div> */}
           <div className="mb-5">
             <label htmlFor="email" className="block mb-2 text-sm font-medium">
               First Name
@@ -167,7 +154,7 @@ const Signup = () => {
             ) : null}
           </div>
 
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <label
               htmlFor="image"
               className="block mb-2 text-sm font-medium text-gray-900"
@@ -181,7 +168,7 @@ const Signup = () => {
               className="outline-none text-gray-900 text-sm rounded-lg block w-full p-2"
               onChange={handleImageChange}
             />
-          </div>
+          </div> */}
 
           <div className="mb-5">
             <label

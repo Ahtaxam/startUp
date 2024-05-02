@@ -1,9 +1,12 @@
 import React from "react";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PATH } from "../../utils/Path";
 import { useFormik } from "formik";
 import ErrorMessage from "../../components/ErrorMessage";
+import { useLoginUserMutation } from "../../redux/slices/Auth";
+import { toast } from "react-toastify";
+import { storeCurrentUser } from "../../utils/storeUser";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -12,15 +15,40 @@ const validationSchema = Yup.object().shape({
     .min(8, "Password must be at least 8 characters"),
 });
 
+// puwejigecu@mailinator.com
 const Login = () => {
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const navigate = useNavigate();
   const { values, errors, handleChange, handleSubmit, touched } = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const result = await loginUser(values).unwrap();
+        const { message, token, data } = result;
+        toast.success(message);
+        storeCurrentUser({...data, token})
+        if(data?.role === "Student"){
+          navigate(PATH.STUDENTHOME);
+          return
+        }
+        if(data?.role === "Software house"){
+          navigate(PATH.SOFTWAREHOUSEHOME);
+          return
+        }
+        storeCurrentUser({
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          role: data.role,
+          profileImage: data.profileImage,
+        });
+      } catch (err) {
+        toast.error(err.data.message);
+      }
     },
   });
 

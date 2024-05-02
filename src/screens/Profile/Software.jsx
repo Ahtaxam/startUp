@@ -8,7 +8,7 @@ import ImageUploader from "../../components/ImageUploader";
 import { useSoftwareHouseCompleteProfileMutation } from "../../redux/slices/Auth";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { storeCurrentUser } from "../../utils/storeUser";
+import { getCurrentUser, storeCurrentUser } from "../../utils/storeUser";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -24,7 +24,9 @@ const validationSchema = Yup.object().shape({
 });
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+// hikadojow@mailinator.com
 const SoftwareHouseProfile = () => {
+  const user = getCurrentUser();
   const [softwareHouseProfile, { isLoading }] =
     useSoftwareHouseCompleteProfileMutation();
 
@@ -65,7 +67,7 @@ const SoftwareHouseProfile = () => {
             toast.error(message);
             return;
           }
-          storeCurrentUser({ ...data, token });
+          storeCurrentUser({...user ,...data, token });
           if (data?.role === "Software house") {
             navigate(PATH.SOFTWAREHOUSEHOME);
           }

@@ -9,8 +9,15 @@ import SoftwareHouseProfile from "../screens/Profile/Software";
 import SoftwareHouseHome from "../screens/softwarehouse/home";
 import RootLayout from "../screens";
 import Jobdetail from "../components/Jobdetail";
+import UpdateSoftwareProfile from "../screens/updateprofile/softwarehouse";
+import UpdateStudentProfile from "../screens/updateprofile/students";
+import { userRole } from "../utils/userRole";
+import RoleRoute from "./RoleRoute";
+import StudentHome from "../screens/student/home";
 
 function AppRoute() {
+  const userrole = userRole();
+  console.log(userrole);
   return (
     <div>
       <Routes>
@@ -42,14 +49,27 @@ function AppRoute() {
           path={PATH.SOFTWAREHOUSE}
         />
 
-          <Route
-            element={<SoftwareHouseHome />}
-            path={PATH.SOFTWAREHOUSEHOME}
-          />
-           <Route
-            element={<Jobdetail />}
-            path={PATH.JOBDETAIL}
-          />
+        <Route element={<SoftwareHouseHome />} path={PATH.SOFTWAREHOUSEHOME} />
+        <Route element={<Jobdetail />} path={PATH.JOBDETAIL} />
+
+        <Route
+          element={
+            <RoleRoute role="Software house">
+              <UpdateSoftwareProfile></UpdateSoftwareProfile>{" "}
+            </RoleRoute>
+          }
+          path={PATH.UPDATESOFTWAREPROFILE}
+        />
+        <Route
+          element={
+            <RoleRoute role="Student">
+              <UpdateStudentProfile></UpdateStudentProfile>{" "}
+            </RoleRoute>
+          }
+          path={PATH.UPDATESTUDENTPROFILE}
+        />
+
+        <Route element={<StudentHome/>} path={PATH.STUDENTHOME} />
       </Routes>
     </div>
   );
