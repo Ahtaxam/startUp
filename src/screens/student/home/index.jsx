@@ -7,6 +7,7 @@ import Publishproject from "./publishProject";
 import { useGetPublishProjectsQuery } from "../../../redux/slices/PublishProjects";
 import { Loader } from "../../../components/Loader";
 import ProjectCard from "../../../components/ProjectCard";
+import { PATH } from "../../../utils/Path";
 
 function StudentHome() {
   const [openModal, setOpenModal] = useState(false);
@@ -15,6 +16,9 @@ function StudentHome() {
   const handleClick = () => {
     setOpenModal(true);
   };
+  const handleProjectDetail = (obj) => {
+    navigate(`/projectDetail/${obj.projectId}`)
+  }
   return (
     <div>
       <Header />
@@ -32,7 +36,7 @@ function StudentHome() {
       ) : (
         <div className=" p-2 grid grid-cols-1 sm:grid-cols-2  gap-4 mt-2 ]">
           {data?.data.map((obj) => (
-            <ProjectCard data={obj}></ProjectCard>
+            <ProjectCard data={obj} onClick={() => handleProjectDetail(obj)}></ProjectCard>
           ))}
         </div>
       )}

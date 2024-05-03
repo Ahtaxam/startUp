@@ -83,6 +83,8 @@ const PublishProject = ({ setOpenModal }) => {
           }
 
           toast.success(message);
+          dispatch(publishProjectApi.util.invalidateTags(["publishProject"]))
+          setOpenModal()
         } catch (err) {
           console.log(err);
           toast.error(err.response.data.message);

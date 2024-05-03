@@ -27,9 +27,9 @@ export const publishProjectApi = createApi({
       providesTags: ["publishProject"],
     }),
 
-    // getSingleJob: builder.query({
-    //   query: (id) => `/job/${id}`,
-    // }),
+    getSingleProject: builder.query({
+      query: (id) => `/project/${id}`,
+    }),
     // deleteJob: builder.mutation({
     //   query: (id) => ({
     //     url: `/job/${id}`,
@@ -41,5 +41,6 @@ export const publishProjectApi = createApi({
 
 export const {
   usePublishProjectsMutation,
-  useGetPublishProjectsQuery
+  useGetPublishProjectsQuery,
+  useGetSingleProjectQuery
 } = publishProjectApi;

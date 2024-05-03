@@ -14,6 +14,7 @@ import UpdateStudentProfile from "../screens/updateprofile/students";
 import { userRole } from "../utils/userRole";
 import RoleRoute from "./RoleRoute";
 import StudentHome from "../screens/student/home";
+import ProjectDetail from "../components/ProjectDetail";
 
 function AppRoute() {
   const userrole = userRole();
@@ -70,6 +71,7 @@ function AppRoute() {
         />
 
         <Route element={<StudentHome/>} path={PATH.STUDENTHOME} />
+        <Route element={<ProjectDetail/>} path={PATH.PROJECTDETAIL} />
       </Routes>
     </div>
   );

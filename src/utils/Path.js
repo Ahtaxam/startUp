@@ -9,6 +9,7 @@ export const PATH = {
   SOFTWAREHOUSEHOME: "/softwarehouse/home",
   JOBDETAIL: "/jobDetail/:id",
   STUDENTHOME: "/student/home",
+  JOBS:"/jobs",
   PROJECTS:"/projects",
-  JOBS:"/jobs"
+  PROJECTDETAIL:"/projectDetail/:id"
 };
