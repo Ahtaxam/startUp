@@ -15,6 +15,11 @@ export const authorizationHeader = (headers, storeState) => {
   return headers;
 };
 
+export const  getToken = () => {
+  const user = getCurrentUser();
+  return user.token;
+}
+
 export const logoutUser = () => {
   localStorage.removeItem(KEY);
 };

@@ -18,8 +18,8 @@ function SoftwareHouseHome() {
   };
 
   const handleCardClick = (obj) => {
-    navigate(`/jobDetail/${obj.jobId}`)
-  }
+    navigate(`/jobDetail/${obj.jobId}`);
+  };
   return (
     <div>
       <Header />
@@ -27,15 +27,21 @@ function SoftwareHouseHome() {
         openModal={openModal}
         setOpenModal={() => setOpenModal(!openModal)}
       >
-        <CreateJob setOpenModal={() => setOpenModal(false)}/>
+        <CreateJob setOpenModal={() => setOpenModal(false)} />
       </CustomModal>
       <Button onClick={handleClick}>Create Job</Button>
       {isLoading ? (
-        <Loader />
+        <div className="flex justify-center items-center">
+          <Loader />
+        </div>
       ) : (
         <div className=" p-2 grid grid-cols-1 sm:grid-cols-2  gap-4 mt-2 ]">
           {data?.data.map((obj) => (
-            <Card data={obj} key={obj._id} onClick={() => handleCardClick(obj)}/>
+            <Card
+              data={obj}
+              key={obj._id}
+              onClick={() => handleCardClick(obj)}
+            />
           ))}
         </div>
       )}

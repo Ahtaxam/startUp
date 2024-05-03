@@ -3,7 +3,7 @@ import { authorizationHeader } from "../../utils/storeUser";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const createJobApi = createApi({
-  reducerPath: "/createJobApi",
+  reducerPath: "createJobApi",
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {

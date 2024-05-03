@@ -8,6 +8,11 @@ import { toast } from "react-toastify";
 import CreatableSelect from "react-select/creatable";
 import { useDispatch } from "react-redux";
 import ImageUploader from "../../../components/ImageUploader";
+import {
+  publishProjectApi,
+  usePublishProjectsMutation,
+} from "../../../redux/slices/PublishProjects";
+import { getToken } from "../../../utils/storeUser";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("title required"),
@@ -18,21 +23,23 @@ const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Select At-least one image").required(),
   studentName: Yup.string().required("student name is required"),
   universityName: Yup.string().required("university name is required"),
-  keywords:Yup.array().min(1, "Select At-least one Keyword").required(),
+  keywords: Yup.array().min(1, "Select At-least one Keyword").required(),
 });
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const KEYWORD = [
-    { value: 'Reactjs', label: 'Reactjs' },
-    { value: 'Nodejs', label: 'Nodejs' },
-    { value: 'MERN', label: 'MERN' }
-  ]
+  { value: "Reactjs", label: "Reactjs" },
+  { value: "Nodejs", label: "Nodejs" },
+  { value: "MERN", label: "MERN" },
+];
 
 const PublishProject = ({ setOpenModal }) => {
+  const [publishProject, { isLoading }] = usePublishProjectsMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const authToken = getToken();
 
-  const { values, errors, handleChange, handleSubmit, touched, setFieldValue, } =
+  const { values, errors, handleChange, handleSubmit, touched, setFieldValue } =
     useFormik({
       initialValues: {
         title: "",
@@ -43,26 +50,47 @@ const PublishProject = ({ setOpenModal }) => {
         images: [],
         studentName: "",
         universityName: "",
-        keywords:[]
+        keywords: [],
       },
       validationSchema: validationSchema,
       onSubmit: async (values, errors) => {
         console.log(values);
-        console.log(errors);
-        // try {
-        //   const { message, data } = await createJob(values).unwrap();
-        //   toast.success(message);
-        //   setOpenModal();
-        //   dispatch(createJobApi.util.invalidateTags(["createdJob"]));
-        // } catch (err) {
-        //   console.log(err);
-        //   toast.error("Internal Server Error");
-        // }
+        const formData = new FormData();
+        formData.append("title", values.title);
+        formData.append("description", values.description);
+        formData.append("category", values.category);
+        values.keywords.forEach((keyword, index) => {
+          formData.append(`keywords[${index}]`, keyword); 
+        });
+        formData.append("projectLink", values.projectLink),
+          formData.append("githubLink", values.githubLink);
+        formData.append("universityName", values.universityName);
+        formData.append("studentName", values.studentName);
+        values.images.forEach((image, index) => {
+          formData.append(`images${index}`, image);
+        });
+        try {
+          let result = await fetch(`${BASE_URL}project/publish`, {
+            method: "POST",
+            body: formData,
+            headers:{ 'Authorization': `Bearer ${authToken}` }
+          });
+          result = await result.json();
+          const { message, data, status } = result;
+          if (status === 400) {
+            toast.error(message);
+            return;
+          }
+
+          toast.success(message);
+        } catch (err) {
+          console.log(err);
+          toast.error(err.response.data.message);
+        }
       },
     });
 
   const handleImageChange = (e) => {
-    console.log(e);
     if (e.target.files) {
       setFieldValue("images", [
         ...values.images,
@@ -77,12 +105,11 @@ const PublishProject = ({ setOpenModal }) => {
   };
 
   const handleKeyword = (values) => {
-    const keywordValues = values.map(item => item.value);
-  setFieldValue("keywords", keywordValues);
-  }
+    const keywordValues = values.map((item) => item.value);
+    setFieldValue("keywords", keywordValues);
+  };
 
   return (
-    
     <div className="">
       <div className="w-full ">
         <h1 className="text-center font-bold text-xl">Create Job</h1>
@@ -154,7 +181,13 @@ const PublishProject = ({ setOpenModal }) => {
             >
               Project keyword
             </label>
-            <CreatableSelect isMulti onChange={handleKeyword} options={KEYWORD } name="keywords" id="keywords"/>
+            <CreatableSelect
+              isMulti
+              onChange={handleKeyword}
+              options={KEYWORD}
+              name="keywords"
+              id="keywords"
+            />
             {touched.keywords && errors.keywords ? (
               <ErrorMessage error={errors.keywords} />
             ) : null}
@@ -261,7 +294,7 @@ const PublishProject = ({ setOpenModal }) => {
             type="submit"
             className="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-5"
           >
-            {"isLoading" ? "Creating..." : "Create"}
+            {isLoading ? "Creating..." : "Create"}
           </button>
         </form>
       </div>
