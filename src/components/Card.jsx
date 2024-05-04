@@ -1,3 +1,4 @@
+import { Badge } from "flowbite-react";
 import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
@@ -11,12 +12,14 @@ function Card({ data, onClick }) {
     salary,
     address,
     companyName,
+    hasApplied
   } = data;
   return (
     <div
       className="bg-white shadow-lg p-4 w-full flex flex-col gap-4 cursor-pointer h-[100%] rounded-xl border border-[#1611401A] "
       onClick={onClick}
     >
+      {hasApplied && <Badge color="purple" className="w-fit p-2">Applied</Badge>}
       <div className="flex justify-between">
         <div>
           <p className="font-bold">Title</p>

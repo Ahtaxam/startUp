@@ -13,6 +13,7 @@ import { PATH } from "../utils/Path";
 import { useDispatch } from "react-redux";
 import { userRole } from "../utils/userRole";
 import { getCurrentUser } from "../utils/storeUser";
+import JobApplicants from "./JobApplicants";
 
 function Jobdetail() {
   const [seeMore, setSeeMore] = useState(true);
@@ -33,6 +34,7 @@ function Jobdetail() {
     type = "",
     address,
     companyName,
+    applications = [],
   } = data?.data?.[0] || {};
 
   const navigate = useNavigate();
@@ -54,14 +56,16 @@ function Jobdetail() {
   };
   const handleApplyJob = async () => {
     try {
-      const result = await applyJob({
+      const { message } = await applyJob({
         userId: user._id,
         jobId: _id,
       }).unwrap();
-      console.log(result);
+      // console.log(result);
+      navigate(PATH.JOBS);
+      toast.success(message);
     } catch (err) {
       console.log(err);
-      toast.error("Server Error");
+      toast.error(err.data.message);
     }
   };
   return (
@@ -146,6 +150,18 @@ function Jobdetail() {
           </div>
         </div>
       </div>
+
+      {role === "Software house" && (
+        <>
+          {" "}
+          <p className="text-center font-inter font-bold text-2xl m-4 underline">
+            Applicants
+          </p>
+          <div className=" p-4 grid grid-cols-1 sm:grid-cols-2  gap-4 mt-2  ">
+            <JobApplicants applications={applications} />
+          </div>
+        </>
+      )}
     </>
   );
 }

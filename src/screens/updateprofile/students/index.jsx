@@ -20,12 +20,13 @@ function UpdateStudentProfile() {
   const user = getCurrentUser();
   const navigate = useNavigate();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const { firstName, lastName, profileImage, email } = user;
+  const { firstName, lastName, profileImage, email,universityName } = user;
   const initialValues = {
     email,
     firstName,
     lastName,
     image: profileImage,
+    universityName
   };
 
   const [selectedImage, setProfileImage] = useState(null);
@@ -50,6 +51,7 @@ function UpdateStudentProfile() {
     formData.append("firstName", values.firstName);
     formData.append("lastName", values.lastName);
     formData.append("profileImage", values.image);
+    formData.append("universityName", values.universityName)
 
     try {
       const { message, data } = await updateProfile(formData).unwrap();
@@ -130,6 +132,7 @@ function UpdateStudentProfile() {
                   name="firstName"
                   id="firstName"
                   className="mt-1 p-2 border rounded-md w-full"
+                  placeholder="Enter first name"
                 />
                 <ErrorMessage
                   name="firstName"
@@ -149,9 +152,31 @@ function UpdateStudentProfile() {
                   name="lastName"
                   id="lastName"
                   className="mt-1 p-2 border rounded-md w-full"
+                  placeholder="Enter last name"
                 />
                 <ErrorMessage
                   name="lastName"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="universityName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  University Name
+                </label>
+                <Field
+                  type="text"
+                  name="universityName"
+                  id="universityName"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  placeholder="Enter university name"
+                />
+                <ErrorMessage
+                  name="universityName"
                   component="div"
                   className="text-red-500 text-sm mt-1"
                 />
