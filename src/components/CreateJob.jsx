@@ -32,6 +32,8 @@ const validationSchema = Yup.object().shape({
 });
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+const JOBType = ["Full-Time", "Part-Time", "Internship", "Contract"]
+
 const CreateJob = ({ setOpenModal }) => {
   const navigate = useNavigate();
   const [createJob, { isLoading }] = useCreateJobMutation();
@@ -42,7 +44,7 @@ const CreateJob = ({ setOpenModal }) => {
       initialValues: {
         title: "",
         description: "",
-        type: "",
+        type: JOBType[0],
         experience: 0,
         salary: "",
         date: "",
@@ -51,7 +53,6 @@ const CreateJob = ({ setOpenModal }) => {
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
-        console.log(values);
         try {
           const { message, data } = await createJob(values).unwrap();
           toast.success(message);
@@ -121,10 +122,16 @@ const CreateJob = ({ setOpenModal }) => {
               onChange={handleChange}
               value={values.type}
             >
+              {/* <option disabled selected>Select any value</option>
               <option value="Full-Time"> Full Time</option>
               <option value="Part-Time"> Part Time</option>
               <option value="Contract"> Contract</option>
-              <option value="Internship">Internship</option>
+              <option value="Internship">Internship</option> */}
+              {
+                JOBType.map((type) => (
+                  <option value={type}>{type}</option>
+                ))
+              }
             </select>
             {touched.ownerName && errors.ownerName ? (
               <ErrorMessage error={errors.ownerName} />

@@ -36,6 +36,17 @@ export const createJobApi = createApi({
         method: "DELETE",
       }),
     }),
+    getAllJobs: builder.query({
+      query: () => "/job/all",
+    }),
+
+    applyjob: builder.mutation({
+      query: (data) => ({
+        url: "/jobapply",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -44,4 +55,6 @@ export const {
   useGetCreatedJobQuery,
   useGetSingleJobQuery,
   useDeleteJobMutation,
+  useGetAllJobsQuery,
+  useApplyjobMutation
 } = createJobApi;

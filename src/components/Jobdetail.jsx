@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-    createJobApi,
+  createJobApi,
+  useApplyjobMutation,
   useDeleteJobMutation,
   useGetSingleJobQuery,
 } from "../redux/slices/CreateJob";
@@ -10,14 +11,20 @@ import DeleteWarning from "./DeleteWarning";
 import { toast } from "react-toastify";
 import { PATH } from "../utils/Path";
 import { useDispatch } from "react-redux";
+import { userRole } from "../utils/userRole";
+import { getCurrentUser } from "../utils/storeUser";
 
 function Jobdetail() {
   const [seeMore, setSeeMore] = useState(true);
+  const role = userRole();
+  const user = getCurrentUser();
   const [open, setOpen] = useState();
   const { id } = useParams();
   const { data, isLoading } = useGetSingleJobQuery(id);
   const [deleteJob, { isLoading: loading }] = useDeleteJobMutation();
+  const [applyJob, { isLoading: applyLoading }] = useApplyjobMutation();
   const {
+    _id = "",
     title = "",
     description = "",
     date = "",
@@ -38,12 +45,24 @@ function Jobdetail() {
     try {
       const { message } = await deleteJob(id).unwrap();
       toast.success(message);
-      dispatch(createJobApi.util.invalidateTags(["createdJob"]))
+      dispatch(createJobApi.util.invalidateTags(["createdJob"]));
       navigate(PATH.SOFTWAREHOUSEHOME);
     } catch (err) {
       toast.error("Server Error");
     }
     setOpen(false);
+  };
+  const handleApplyJob = async () => {
+    try {
+      const result = await applyJob({
+        userId: user._id,
+        jobId: _id,
+      }).unwrap();
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+      toast.error("Server Error");
+    }
   };
   return (
     <>
@@ -56,12 +75,21 @@ function Jobdetail() {
       <div className="shadow-lg bg-white flex flex-col  p-4 my-4 mx-auto w-[94%] sm:w-[80%] rounded-lg ">
         <div className="flex justify-between">
           <p className=" font-bold font-inter  m-4 text-4xl">Job Detail</p>
-          <button
-            className="border bg-red-600 w-[150px] text-white rounded m-4 p-2"
-            onClick={handleDeleteButton}
-          >
-            Delete Job
-          </button>
+          {role === "Software house" ? (
+            <button
+              className="border bg-red-600 w-[150px] text-white rounded m-4 p-2"
+              onClick={handleDeleteButton}
+            >
+              Delete Job
+            </button>
+          ) : (
+            <button
+              className="border bg-[#00215E] w-[150px] text-white rounded m-4 p-2"
+              onClick={handleApplyJob}
+            >
+              {applyLoading ? "Applying..." : "Apply"}
+            </button>
+          )}
         </div>
         <div className="flex justify-between">
           <div>

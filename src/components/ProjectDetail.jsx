@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import { PATH } from "../utils/Path";
 import { useDispatch } from "react-redux";
 import { useGetSingleProjectQuery } from "../redux/slices/PublishProjects";
+import { userRole } from "../utils/userRole";
+import HireMessage from "./HireMessage";
 
 const responsive = {
   desktop: {
@@ -29,6 +31,7 @@ const responsive = {
 };
 
 function ProjectDetail() {
+  const role = userRole();
   const [seeMore, setSeeMore] = useState(true);
   const [open, setOpen] = useState();
   const { id } = useParams();
@@ -44,6 +47,7 @@ function ProjectDetail() {
     githubLink = "",
     universityName = "",
     studentName = "",
+    createdBy={}
   } = data?.data?.[0] || {};
 
   const navigate = useNavigate();
@@ -63,23 +67,25 @@ function ProjectDetail() {
     // }
     // setOpen(false);
   };
+  const handleHireStudent = () => {
+    setOpen(true)
+  }
   return (
     <>
       <CustomModal openModal={open} setOpenModal={() => setOpen(!open)}>
-        <DeleteWarning
-          handleDelete={handleDeleteJob}
-          Cancel={() => setOpen(!open)}
+        <HireMessage student={createdBy.email} Cancel={() => setOpen(!open)}
+         
         />
       </CustomModal>
       <div className="shadow-lg bg-white flex flex-col  p-4 my-4 mx-auto w-[94%] sm:w-[80%] rounded-lg ">
         <div className="flex justify-between">
           <p className=" font-bold font-inter  m-4 text-4xl">Project Detail</p>
-          {/* <button
-            className="border bg-red-600 w-[150px] text-white rounded m-4 p-2"
-            onClick={handleDeleteButton}
+          {role ===  "Software house" && <button
+            className="border bg-[#00215E] w-[150px] text-white rounded m-4 p-2"
+            onClick={handleHireStudent}
           >
-            Delete Job
-          </button> */}
+            Hire
+          </button>}
         </div>
         <div className="flex justify-between">
           <div>
@@ -120,6 +126,11 @@ function ProjectDetail() {
           <div className="mt-4">
             <p className="font-bold">Student Name</p>
             <p className="font-inter">{studentName}</p>
+          </div>
+
+          <div className="mt-4">
+            <p className="font-bold">Student Email</p>
+            <p className="font-inter">{createdBy.email}</p>
           </div>
 
           <div className="mt-4">

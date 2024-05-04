@@ -15,6 +15,8 @@ import { userRole } from "../utils/userRole";
 import RoleRoute from "./RoleRoute";
 import StudentHome from "../screens/student/home";
 import ProjectDetail from "../components/ProjectDetail";
+import PublishedProjects from "../screens/softwarehouse/projects";
+import Jobs from "../screens/student/jobs";
 
 function AppRoute() {
   const userrole = userRole();
@@ -52,6 +54,7 @@ function AppRoute() {
 
         <Route element={<SoftwareHouseHome />} path={PATH.SOFTWAREHOUSEHOME} />
         <Route element={<Jobdetail />} path={PATH.JOBDETAIL} />
+        <Route element={<PublishedProjects/>} path={PATH.PROJECTS} />
 
         <Route
           element={
@@ -72,6 +75,7 @@ function AppRoute() {
 
         <Route element={<StudentHome/>} path={PATH.STUDENTHOME} />
         <Route element={<ProjectDetail/>} path={PATH.PROJECTDETAIL} />
+        <Route element={<Jobs/>} path={PATH.JOBS} />
       </Routes>
     </div>
   );
