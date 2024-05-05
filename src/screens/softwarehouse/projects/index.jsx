@@ -24,7 +24,7 @@ function PublishedProjects() {
       ) : (
         <div className=" p-2 grid grid-cols-1 sm:grid-cols-2  gap-4 mt-2 ]">
           {data?.data.map((obj) => (
-            <ProjectCard data={obj} onClick={() => handleProjectDetail(obj)}></ProjectCard>
+            <ProjectCard data={obj} onClick={() => handleProjectDetail(obj)} key={obj._id}></ProjectCard>
           ))}
         </div>
       )}

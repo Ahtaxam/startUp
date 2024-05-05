@@ -38,6 +38,7 @@ export const createJobApi = createApi({
     }),
     getAllJobs: builder.query({
       query: () => "/job/all",
+      providesTags: ["createdJob"],
     }),
 
     applyjob: builder.mutation({

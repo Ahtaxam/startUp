@@ -1,6 +1,7 @@
 import { Badge } from "flowbite-react";
 import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { Rating } from "react-simple-star-rating";
 
 function Card({ data, onClick }) {
   const {
@@ -12,14 +13,19 @@ function Card({ data, onClick }) {
     salary,
     address,
     companyName,
-    hasApplied
+    hasApplied,
+    rating,
   } = data;
   return (
     <div
       className="bg-white shadow-lg p-4 w-full flex flex-col gap-4 cursor-pointer h-[100%] rounded-xl border border-[#1611401A] "
       onClick={onClick}
     >
-      {hasApplied && <Badge color="purple" className="w-fit p-2">Applied</Badge>}
+      {hasApplied && (
+        <Badge color="purple" className="w-fit p-2">
+          Applied
+        </Badge>
+      )}
       <div className="flex justify-between">
         <div>
           <p className="font-bold">Title</p>
@@ -45,9 +51,21 @@ function Card({ data, onClick }) {
         <p className="font-inter">{address}</p>
       </div>
 
-      <div>
-        <p className="font-bold">Company Name</p>
-        <p className="font-inter">{companyName}</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="font-bold">Company Name</p>
+          <p className="font-inter">{companyName}</p>
+        </div>
+
+        <div>
+          <p className="font-bold">Rating</p>
+          <p className="font-inter">
+            <Rating
+              initialValue={rating}
+              SVGstyle={{ display: "inline", width: "15px" }}
+            />
+          </p>
+        </div>
       </div>
 
       <div className="flex justify-between">

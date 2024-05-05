@@ -11,5 +11,6 @@ export const PATH = {
   STUDENTHOME: "/student/home",
   JOBS:"/jobs",
   PROJECTS:"/projects",
-  PROJECTDETAIL:"/projectDetail/:id"
+  PROJECTDETAIL:"/projectDetail/:id",
+  REVIEWS:"/reviews"
 };

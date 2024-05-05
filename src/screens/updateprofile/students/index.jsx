@@ -20,13 +20,15 @@ function UpdateStudentProfile() {
   const user = getCurrentUser();
   const navigate = useNavigate();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const { firstName, lastName, profileImage, email,universityName } = user;
+  const { firstName, lastName, profileImage, email,universityName, semester, cgpa } = user;
   const initialValues = {
     email,
     firstName,
     lastName,
     image: profileImage,
-    universityName
+    universityName,
+    semester,
+    cgpa
   };
 
   const [selectedImage, setProfileImage] = useState(null);
@@ -51,7 +53,9 @@ function UpdateStudentProfile() {
     formData.append("firstName", values.firstName);
     formData.append("lastName", values.lastName);
     formData.append("profileImage", values.image);
-    formData.append("universityName", values.universityName)
+    formData.append("universityName", values.universityName);
+    formData.append("semester", values.semester)
+    formData.append("cgpa", values.cgpa)
 
     try {
       const { message, data } = await updateProfile(formData).unwrap();
@@ -177,6 +181,49 @@ function UpdateStudentProfile() {
                 />
                 <ErrorMessage
                   name="universityName"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="semester"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Semester
+                </label>
+                <Field
+                  type="number"
+                  name="semester"
+                  id="semester"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  placeholder="Enter your Semester"
+                />
+                <ErrorMessage
+                  name="semester"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="cgpa"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Cgpa
+                </label>
+                <Field
+                  type="number"
+                  name="cgpa"
+                  id="cgpa"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  placeholder="Enter your cgpa"
+                  
+                />
+                <ErrorMessage
+                  name="cgpa"
                   component="div"
                   className="text-red-500 text-sm mt-1"
                 />

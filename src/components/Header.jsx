@@ -49,7 +49,19 @@ export function Header() {
             </span>
             <span className="block truncate text-sm font-medium">{email}</span>
           </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
+          <Dropdown.Item>
+            {" "}
+            <Link
+              to={
+                role === "Software house"
+                  ? PATH.SOFTWAREHOUSEHOME
+                  : PATH.STUDENTHOME
+              }
+            >
+              {" "}
+              Dashboard
+            </Link>
+          </Dropdown.Item>
           <Dropdown.Item>
             <Link
               to={
@@ -58,11 +70,10 @@ export function Header() {
                   : PATH.UPDATESOFTWAREPROFILE
               }
             >
-              {" "}
               Update Profile
             </Link>
           </Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
+          {role === "Student" && <Dropdown.Item><Link to={PATH.REVIEWS}>Reviews</Link></Dropdown.Item>}
           <Dropdown.Divider />
           <Dropdown.Item
             className="text-red-600 font-bold"

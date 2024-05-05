@@ -8,6 +8,7 @@ import { Header } from "../../../components/Header";
 function Jobs() {
   const { data, isLoading } = useGetAllJobsQuery();
   const navigate = useNavigate();
+  
 
   const handleCardClick = (obj) => {
     navigate(`/jobDetail/${obj.jobId}`);
