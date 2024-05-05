@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Avatar from "../../../assets/images/avatar.png";
@@ -8,19 +8,32 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../utils/Path";
 import { FaCamera } from "react-icons/fa";
+import { Button } from "flowbite-react";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("firstName is required"),
   lastName: Yup.string().required("lastName is required"),
+  // studentAbout:Yup.string().required("About is Required")
 });
 
 function UpdateStudentProfile() {
+  const [cv, setCv] = useState(null);
   const user = getCurrentUser();
   const navigate = useNavigate();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const { firstName, lastName, profileImage, email,universityName, semester, cgpa } = user;
+  const {
+    firstName,
+    lastName,
+    profileImage,
+    email,
+    universityName,
+    semester,
+    cgpa,
+    studentAbout,
+    resume,
+  } = user;
   const initialValues = {
     email,
     firstName,
@@ -28,7 +41,9 @@ function UpdateStudentProfile() {
     image: profileImage,
     universityName,
     semester,
-    cgpa
+    cgpa,
+    studentAbout,
+    // resume:null
   };
 
   const [selectedImage, setProfileImage] = useState(null);
@@ -45,17 +60,24 @@ function UpdateStudentProfile() {
     }
   };
 
+  const handleFileChange = (e) => {
+    setCv(e.target.files[0]);
+  };
+
   const onSubmit = async (values, { setSubmitting }) => {
     // You can handle form submission here
     // e.stopPropagation()
+    console.log(values);
     const formData = new FormData();
     formData.append("email", values.email);
     formData.append("firstName", values.firstName);
     formData.append("lastName", values.lastName);
     formData.append("profileImage", values.image);
     formData.append("universityName", values.universityName);
-    formData.append("semester", values.semester)
-    formData.append("cgpa", values.cgpa)
+    formData.append("semester", values.semester);
+    formData.append("cgpa", values.cgpa);
+    formData.append("studentAbout", values.studentAbout);
+    formData.append("resume", cv);
 
     try {
       const { message, data } = await updateProfile(formData).unwrap();
@@ -69,6 +91,12 @@ function UpdateStudentProfile() {
 
     // setSubmitting(false);
   };
+  useEffect(() => {
+    // Set previously selected resume file when component mounts
+    if (resume) {
+      setCv(resume);
+    }
+  }, [resume]);
 
   return (
     <div className="max-w-md mx-auto h-[100vh] my-auto">
@@ -220,7 +248,6 @@ function UpdateStudentProfile() {
                   id="cgpa"
                   className="mt-1 p-2 border rounded-md w-full"
                   placeholder="Enter your cgpa"
-                  
                 />
                 <ErrorMessage
                   name="cgpa"
@@ -229,10 +256,55 @@ function UpdateStudentProfile() {
                 />
               </div>
 
+              <div className="mb-4">
+                <label
+                  htmlFor="studentAbout"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  About
+                </label>
+                <Field
+                  type="text"
+                  as="textarea"
+                  name="studentAbout"
+                  id="studentAbout"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  placeholder="Describe Yourself"
+                />
+                <ErrorMessage
+                  name="studentAbout"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="resume"
+                  className="block text-lg font-medium text-gray-700"
+                >
+                  Resume
+                  {resume && (
+                    <Button
+                      className="float-end bg-sky-600"
+                      onClick={() => window.open(resume, "_blank")}
+                    >
+                      Preview Resume
+                    </Button>
+                  )}
+                </label>
+
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handleFileChange}
+                />
+              </div>
+
               <button
                 type="submit"
                 // disabled={isSubmitting}
-                className="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
+                className="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-4"
               >
                 {isSubmitting ? "Updating..." : "Update"}
               </button>

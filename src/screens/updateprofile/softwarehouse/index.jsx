@@ -13,8 +13,8 @@ import { PATH } from "../../../utils/Path";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("firstName is required"),
-  lastName: Yup.string().required("lastName is required"),
+  // firstName: Yup.string().required("firstName is required"),
+  companyName: Yup.string().required("companyName is required"),
   address: Yup.string().required("Address is required"),
   phoneNo: Yup.string()
     .matches(phoneRegExp, "Phone number is not valid")
@@ -23,11 +23,21 @@ const validationSchema = Yup.object().shape({
 
 function UpdateSoftwareProfile() {
   const user = getCurrentUser();
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation ();
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const navigate = useNavigate();
-  
 
-  const { email, firstName, lastName, profileImage, phoneNo, address } = user;
+  const {
+    email,
+    firstName,
+    lastName,
+    profileImage,
+    phoneNo,
+    address,
+    companyName,
+    companyAbout,
+    companyUrl,
+    companyStrength
+  } = user;
   const initialValues = {
     email,
     firstName,
@@ -35,6 +45,10 @@ function UpdateSoftwareProfile() {
     image: profileImage,
     phoneNo,
     address,
+    companyName,
+    companyAbout,
+    companyUrl,
+    companyStrength
   };
 
   const [selectedImage, setProfileImage] = useState(null);
@@ -55,11 +69,13 @@ function UpdateSoftwareProfile() {
     // You can handle form submission here
     const formData = new FormData();
     formData.append("email", values.email);
-    formData.append("firstName", values.firstName);
-    formData.append("lastName", values.lastName);
+    formData.append("companyAbout", values.companyAbout);
+    formData.append("companyUrl", values.companyUrl);
     formData.append("profileImage", values.image);
     formData.append("phoneNo", values.phoneNo);
     formData.append("address", values.address);
+    formData.append("companyName", values.companyName);
+    formData.append("companyStrength", values.companyStrength)
 
     try {
       const { message, data } = await updateProfile(formData).unwrap();
@@ -94,17 +110,16 @@ function UpdateSoftwareProfile() {
                     className="w-20 h-20 rounded-full border border-gray-400"
                   />
                   <div className="relative">
-
-                  <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => handleImageChange(e, setFieldValue)}
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => handleImageChange(e, setFieldValue)}
                     />
-                  <FaCamera className="absolute cursor-pointer right-3 -top-6" />
-                    </div>
+                    <FaCamera className="absolute cursor-pointer right-3 -top-6" />
+                  </div>
                 </label>
               </div>
               <div className="mb-4">
@@ -127,7 +142,7 @@ function UpdateSoftwareProfile() {
                   className="text-red-500 text-sm mt-1"
                 />
               </div>
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <label
                   htmlFor="firstName"
                   className="block text-sm font-medium text-gray-700"
@@ -145,22 +160,22 @@ function UpdateSoftwareProfile() {
                   component="div"
                   className="text-red-500 text-sm mt-1"
                 />
-              </div>
+              </div> */}
               <div className="mb-4">
                 <label
-                  htmlFor="lastName"
+                  htmlFor="companyName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Last Name
+                  Company Name
                 </label>
                 <Field
                   type="text"
-                  name="lastName"
-                  id="lastName"
+                  name="companyName"
+                  id="companyName"
                   className="mt-1 p-2 border rounded-md w-full"
                 />
                 <ErrorMessage
-                  name="lastName"
+                  name="companyName"
                   component="div"
                   className="text-red-500 text-sm mt-1"
                 />
@@ -199,6 +214,69 @@ function UpdateSoftwareProfile() {
                 />
                 <ErrorMessage
                   name="address"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="companyAbout"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  About
+                </label>
+                <Field
+                  type="text"
+                  as="textarea"
+                  name="companyAbout"
+                  id="companyAbout"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  placeholder="Describe Yourself"
+                />
+                <ErrorMessage
+                  name="companyAbout"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="companyUrl"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Website Link
+                </label>
+                <Field
+                  type="text"
+                  name="companyUrl"
+                  id="companyUrl"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  placeholder="Company website"
+                />
+                <ErrorMessage
+                  name="companyUrl"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="companyStrength"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  No of Employees
+                </label>
+                <Field
+                  type="number"
+                  name="companyStrength"
+                  id="companyStrength"
+                  className="mt-1 p-2 border rounded-md w-full"
+                />
+                <ErrorMessage
+                  name="companyStrength"
                   component="div"
                   className="text-red-500 text-sm mt-1"
                 />

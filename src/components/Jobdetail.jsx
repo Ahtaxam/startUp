@@ -145,7 +145,7 @@ function Jobdetail() {
           </div>
 
           <div>
-            <p className="font-bold">Expiry date</p>
+            <p className="font-bold">Deadline</p>
             {date}
           </div>
         </div>

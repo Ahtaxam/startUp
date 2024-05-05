@@ -21,8 +21,8 @@ const validationSchema = Yup.object().shape({
   projectLink: Yup.string().url().nullable(),
   githubLink: Yup.string().url().nullable(),
   images: Yup.array().min(1, "Select At-least one image").required(),
-  studentName: Yup.string().required("student name is required"),
-  universityName: Yup.string().required("university name is required"),
+  // studentName: Yup.string().required("student name is required"),
+  // universityName: Yup.string().required("university name is required"),
   keywords: Yup.array().min(1, "Select At-least one Keyword").required(),
 });
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -48,8 +48,8 @@ const PublishProject = ({ setOpenModal }) => {
         projectLink: "",
         githubLink: "",
         images: [],
-        studentName: "",
-        universityName: "",
+        // studentName: "",
+        // universityName: "",
         keywords: [],
       },
       validationSchema: validationSchema,
@@ -64,8 +64,8 @@ const PublishProject = ({ setOpenModal }) => {
         });
         formData.append("projectLink", values.projectLink),
           formData.append("githubLink", values.githubLink);
-        formData.append("universityName", values.universityName);
-        formData.append("studentName", values.studentName);
+        // formData.append("universityName", values.universityName);
+        // formData.append("studentName", values.studentName);
         values.images.forEach((image, index) => {
           formData.append(`images${index}`, image);
         });
@@ -114,7 +114,7 @@ const PublishProject = ({ setOpenModal }) => {
   return (
     <div className="">
       <div className="w-full ">
-        <h1 className="text-center font-bold text-xl">Create Job</h1>
+        <h1 className="text-center font-bold text-xl">Publish Project</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-5">
             <label htmlFor="title" className="block mb-2 text-sm font-medium">
@@ -251,7 +251,7 @@ const PublishProject = ({ setOpenModal }) => {
             {touched.images && <ErrorMessage error={errors.images} />}
           </div>
 
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <label
               htmlFor="studentName"
               className="block mb-2 text-sm font-medium text-gray-900"
@@ -291,7 +291,7 @@ const PublishProject = ({ setOpenModal }) => {
             {touched.universityName && errors.universityName ? (
               <ErrorMessage error={errors.universityName} />
             ) : null}
-          </div>
+          </div> */}
           <button
             type="submit"
             className="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-5"

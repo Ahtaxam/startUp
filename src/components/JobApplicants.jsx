@@ -1,13 +1,24 @@
+import { Button } from "flowbite-react";
 import React from "react";
 
 function JobApplicants({ applications }) {
+  const handleDownloadResume = () => {
+    
+  };
   return (
     <div className="shadow-lg p-4">
       {applications.length === 0 && (
         <p className="font-inter text-red-600">No Application Received</p>
       )}
       {applications.map((obj) => {
-        const { firstName, lastName, profileImage, email, universityName } = obj?.user;
+        const {
+          firstName,
+          lastName,
+          profileImage,
+          email,
+          universityName,
+          resume,
+        } = obj?.user;
         return (
           <>
             <div className="flex justify-between items-center">
@@ -24,10 +35,14 @@ function JobApplicants({ applications }) {
             </p>
 
             <p className="mt-4">
-              <span className="font-bold"> University Name:</span> {universityName}
+              <span className="font-bold"> University Name:</span>{" "}
+              {universityName}
             </p>
-
-                <p className=" mt-4"> <span className="font-bold">Application date: </span> {new Date(obj.applicationDate).toLocaleDateString()}</p>
+            <a href={resume} download={true} target="__blank">
+              <Button className="mt-4" onClick={handleDownloadResume}>
+                Resume
+              </Button>
+            </a>
           </>
         );
       })}

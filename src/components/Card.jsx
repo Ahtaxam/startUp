@@ -2,8 +2,10 @@ import { Badge } from "flowbite-react";
 import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Rating } from "react-simple-star-rating";
+import { userRole } from "../utils/userRole";
 
 function Card({ data, onClick }) {
+  const role = userRole();
   const {
     title,
     description,
@@ -57,15 +59,18 @@ function Card({ data, onClick }) {
           <p className="font-inter">{companyName}</p>
         </div>
 
-        <div>
-          <p className="font-bold">Rating</p>
-          <p className="font-inter">
-            <Rating
-              initialValue={rating}
-              SVGstyle={{ display: "inline", width: "15px" }}
-            />
-          </p>
-        </div>
+        {role === "Student" && (
+          <div>
+            <p className="font-bold">Rating</p>
+            <p className="font-inter">
+              <Rating
+                initialValue={rating}
+                SVGstyle={{ display: "inline", width: "15px" }}
+                readonly={true}
+              />
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="flex justify-between">

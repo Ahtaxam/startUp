@@ -84,7 +84,7 @@ function ProjectDetail() {
             className="border bg-[#00215E] w-[150px] text-white rounded m-4 p-2"
             onClick={handleHireStudent}
           >
-            Hire
+            Approved
           </button>}
         </div>
         <div className="flex justify-between">
@@ -114,7 +114,7 @@ function ProjectDetail() {
         </div>
 
         <div className="mt-4">
-          <p className="font-bold mb-2">Keywords</p>
+          <p className="font-bold mb-2">Technologies</p>
           {keywords.map((words) => (
             <span className="font-inter mr-3  border border-sky-800 rounded-lg p-2">
               {" "}
@@ -125,7 +125,7 @@ function ProjectDetail() {
         <div className="flex justify-between mt-4">
           <div className="mt-4">
             <p className="font-bold">Student Name</p>
-            <p className="font-inter">{studentName}</p>
+            <p className="font-inter">{createdBy.firstName + " " + createdBy.lastName}</p>
           </div>
 
           <div className="mt-4">
@@ -135,7 +135,7 @@ function ProjectDetail() {
 
           <div className="mt-4">
             <p className="font-bold">University Name</p>
-            <p className="font-inter">{universityName}</p>
+            <p className="font-inter">{createdBy.universityName}</p>
           </div>
         </div>
 
