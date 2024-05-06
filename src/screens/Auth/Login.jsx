@@ -103,7 +103,7 @@ const Login = () => {
             type="submit"
             className="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
           >
-            Login
+            {isLoading ? "Logging..." :"Login"}
           </button>
         </form>
         <p className="text-right mt-2">

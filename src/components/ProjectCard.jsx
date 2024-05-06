@@ -19,17 +19,17 @@ function ProjectCard({ data, onClick }) {
     >
       <div className="flex justify-between">
         <div>
-          <p className="font-inter font-extrabold">Title</p>
-          <p className="font-inter  text-xl">{title}</p>
+          <p className="font-inter font-bold">Title</p>
+          <p className="font-inter  text-lg">{title}</p>
         </div>
         <div>
-          <p className="font-inter font-extrabold">Category</p>
-          <p className="font-inter  text-xl">{category}</p>
+          <p className="font-inter font-bold">Category</p>
+          <p className="font-inter  text-lg">{category}</p>
         </div>
       </div>
       <div>
-        <p className="font-inter font-extrabold">Description</p>
-        <p className="font-inter">{description.slice(0, 100)}....</p>
+        <p className="font-inter font-bold">Description</p>
+        <p className="font-inter text-lg">{description.slice(0, 100)}....</p>
       </div>
     </div>
   );

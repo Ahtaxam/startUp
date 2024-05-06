@@ -8,6 +8,7 @@ import { publishProjectApi } from "./slices/PublishProjects";
 import { sendEmailApi } from "./slices/SendEmail";
 import { softwareHouseApi } from "./slices/SoftwareHouse";
 import { reviewsApi } from "./slices/Reviews";
+import { allStudentsApi } from "./slices/Students";
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
@@ -16,7 +17,8 @@ export const store = configureStore({
     [publishProjectApi.reducerPath]: publishProjectApi.reducer,
     [sendEmailApi.reducerPath]: sendEmailApi.reducer,
     [softwareHouseApi.reducerPath]: softwareHouseApi.reducer,
-    [reviewsApi.reducerPath]:reviewsApi.reducer
+    [reviewsApi.reducerPath]:reviewsApi.reducer,
+    [allStudentsApi.reducerPath]:allStudentsApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -26,7 +28,8 @@ export const store = configureStore({
       publishProjectApi.middleware,
       sendEmailApi.middleware,
       softwareHouseApi.middleware,
-      reviewsApi.middleware
+      reviewsApi.middleware,
+      allStudentsApi.middleware
     ),
 });
 

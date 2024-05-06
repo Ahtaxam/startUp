@@ -19,6 +19,7 @@ import PublishedProjects from "../screens/softwarehouse/projects";
 import Jobs from "../screens/student/jobs";
 import Reviews from "../screens/Reviews";
 import InvestorHome from "../screens/Investor/Home";
+import StudentDetail from "../components/StudentDetail";
 
 function AppRoute() {
   const userrole = userRole();
@@ -84,6 +85,7 @@ function AppRoute() {
 
 
         <Route element={<InvestorHome/>} path={PATH.INVESTORHOME} />
+        <Route element={<StudentDetail/>} path={PATH.STUDENTDETAIL} />
       </Routes>
     </div>
   );

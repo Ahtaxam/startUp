@@ -138,7 +138,7 @@ const PublishProject = ({ setOpenModal }) => {
               htmlFor="description"
               className="block mb-2 text-sm font-medium"
             >
-              project Description
+              Project Description
             </label>
 
             <textarea

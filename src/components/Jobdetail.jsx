@@ -60,8 +60,9 @@ function Jobdetail() {
         userId: user._id,
         jobId: _id,
       }).unwrap();
-      // console.log(result);
+      dispatch(createJobApi.util.invalidateTags(["createdJob"]));
       navigate(PATH.JOBS);
+
       toast.success(message);
     } catch (err) {
       console.log(err);

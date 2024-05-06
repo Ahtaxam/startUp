@@ -8,6 +8,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { createJobApi, useCreateJobMutation } from "../redux/slices/CreateJob";
 import { useDispatch } from "react-redux";
+import { getCurrentUser } from "../utils/storeUser";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("title required"),
@@ -35,6 +36,8 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const JOBType = ["Full-Time", "Part-Time", "Internship", "Contract"]
 
 const CreateJob = ({ setOpenModal }) => {
+  const user = getCurrentUser();
+  const {companyName, address} = user;
   const navigate = useNavigate();
   const [createJob, { isLoading }] = useCreateJobMutation();
   const dispatch = useDispatch();
@@ -48,8 +51,8 @@ const CreateJob = ({ setOpenModal }) => {
         experience: 0,
         salary: "",
         date: "",
-        address: "",
-        companyName: "",
+        address,
+        companyName,
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {

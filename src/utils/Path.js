@@ -13,5 +13,7 @@ export const PATH = {
   PROJECTS:"/projects",
   PROJECTDETAIL:"/projectDetail/:id",
   REVIEWS:"/reviews",
-  INVESTORHOME:"/investor/home"
+  INVESTORHOME:"/investor/home",
+  STUDENTS:"/students",
+  STUDENTDETAIL:"/studentDetail/:id"
 };
