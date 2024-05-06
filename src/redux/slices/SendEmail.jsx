@@ -21,7 +21,15 @@ export const sendEmailApi = createApi({
       }),
       invalidatesTags: ["sendEmail"],
     }),
+    sendInvestorEmail: builder.mutation({
+      query: (data) => ({
+        url: "/email/investor/send",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["sendEmail"],
+    }),
   }),
 });
 
-export const { useSendEmailMutation } = sendEmailApi;
+export const { useSendEmailMutation , useSendInvestorEmailMutation} = sendEmailApi;
