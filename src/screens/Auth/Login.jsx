@@ -39,6 +39,10 @@ const Login = () => {
           navigate(PATH.SOFTWAREHOUSEHOME);
           return
         }
+        if(data?.role === "Investor"){
+          navigate(PATH.INVESTORHOME);
+          return
+        }
         storeCurrentUser({
           email: data.email,
           firstName: data.firstName,

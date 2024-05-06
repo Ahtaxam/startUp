@@ -18,6 +18,7 @@ import ProjectDetail from "../components/ProjectDetail";
 import PublishedProjects from "../screens/softwarehouse/projects";
 import Jobs from "../screens/student/jobs";
 import Reviews from "../screens/Reviews";
+import InvestorHome from "../screens/Investor/Home";
 
 function AppRoute() {
   const userrole = userRole();
@@ -79,6 +80,10 @@ function AppRoute() {
         <Route element={<Jobs />} path={PATH.JOBS} />
 
         <Route element={<Reviews />} path={PATH.REVIEWS} />
+
+
+
+        <Route element={<InvestorHome/>} path={PATH.INVESTORHOME} />
       </Routes>
     </div>
   );

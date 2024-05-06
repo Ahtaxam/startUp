@@ -49,10 +49,11 @@ const Signup = () => {
         storeCurrentUser({ ...data, token });
         if (data.role === "Software house") {
           navigate(PATH.SOFTWAREHOUSE);
+          return
         }
-        if (data.role === "Student") {
+        // if (data.role === "Student") {
           navigate(PATH.LOGIN);
-        }
+        // }
       } catch (err) {
         console.log(err);
         toast.error(err.data.message);
