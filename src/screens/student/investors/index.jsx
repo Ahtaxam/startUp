@@ -67,6 +67,7 @@ function Investors() {
           </Button>
         </CustomModal>
         <Header />
+        <p className="font-inter text-center text-2xl font-bold m-4">Investors</p>
         {isLoading ? (
           <div className="flex justify-center items-center">
             <Loader />

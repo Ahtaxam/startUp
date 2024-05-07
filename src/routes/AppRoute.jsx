@@ -21,6 +21,7 @@ import Reviews from "../screens/Reviews";
 import InvestorHome from "../screens/Investor/Home";
 import StudentDetail from "../components/StudentDetail";
 import Investors from "../screens/student/investors";
+import UpdateInvestorProfile from "../screens/updateprofile/investor";
 
 function AppRoute() {
   const userrole = userRole();
@@ -90,6 +91,16 @@ function AppRoute() {
 
 
         <Route element ={<Investors/>} path={PATH.INVESTORS} />
+
+        <Route
+          element={
+            <RoleRoute role="Investor">
+              <UpdateInvestorProfile></UpdateInvestorProfile>{" "}
+            </RoleRoute>
+          }
+          path={PATH.UPDATEINVESTORPROFILE}
+        />
+        
       </Routes>
     </div>
   );

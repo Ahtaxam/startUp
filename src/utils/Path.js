@@ -4,6 +4,7 @@ export const PATH = {
   SIGNUP: "/signup",
   UPDATESOFTWAREPROFILE: "/update_profile/software",
   UPDATESTUDENTPROFILE: "/update_profile/student",
+  UPDATEINVESTORPROFILE:"/update_profile/investor",
   SOFTWAREHOUSE: "/softwarehouse/completeprofile",
   INVESTOR: "/investor/completeprofile",
   SOFTWAREHOUSEHOME: "/softwarehouse/home",

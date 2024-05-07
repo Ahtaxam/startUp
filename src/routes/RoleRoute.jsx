@@ -10,9 +10,9 @@ function RoleRoute({ children, role }) {
         children
       ) : (
         <Navigate
-          to={`${
-            user === "Software house"
-          } ? "/softwarehouse/home": "student/home"`}
+          to={`${user === "Software house"} ? "/softwarehouse/home": ${
+            role === "Investor" ? "/investor/home" : "student/home"
+          }`}
         />
       )}
     </>

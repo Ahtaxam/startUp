@@ -67,13 +67,19 @@ export function Header() {
               to={
                 role === "Student"
                   ? PATH.UPDATESTUDENTPROFILE
+                  : role === "Investor"
+                  ? PATH.UPDATEINVESTORPROFILE
                   : PATH.UPDATESOFTWAREPROFILE
               }
             >
               Update Profile
             </Link>
           </Dropdown.Item>
-          {role === "Student" && <Dropdown.Item><Link to={PATH.REVIEWS}>Reviews</Link></Dropdown.Item>}
+          {role === "Student" && (
+            <Dropdown.Item>
+              <Link to={PATH.REVIEWS}>Reviews</Link>
+            </Dropdown.Item>
+          )}
           <Dropdown.Divider />
           <Dropdown.Item
             className="text-red-600 font-bold"
@@ -85,19 +91,26 @@ export function Header() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Link
-          to={role === "Student" ? PATH.STUDENTHOME : PATH.SOFTWAREHOUSEHOME}
-          active
-        >
-          Home
-        </Link>
-        {role === "Student" ? (
+        {role !== "Investor" && (
           <>
-          <Link to={PATH.JOBS}>Jobs</Link>
-          <Link to={PATH.INVESTORS}> Investors</Link>
+            {" "}
+            <Link
+              to={
+                role === "Student" ? PATH.STUDENTHOME : PATH.SOFTWAREHOUSEHOME
+              }
+              active
+            >
+              Home
+            </Link>
+            {role === "Student" ? (
+              <>
+                <Link to={PATH.JOBS}>Jobs</Link>
+                <Link to={PATH.INVESTORS}> Investors</Link>
+              </>
+            ) : (
+              <Link to={PATH.PROJECTS}>Projects</Link>
+            )}
           </>
-        ) : (
-          <Link to={PATH.PROJECTS}>Projects</Link>
         )}
       </Navbar.Collapse>
     </Navbar>

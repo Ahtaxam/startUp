@@ -9,6 +9,7 @@ import { useUpdateProfileMutation } from "../../../redux/slices/UpdateProfile";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PATH } from "../../../utils/Path";
+import uploadImageToCloudinary from "../../../utils/uploadCloudinary";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -36,7 +37,7 @@ function UpdateSoftwareProfile() {
     companyName,
     companyAbout,
     companyUrl,
-    companyStrength
+    companyStrength,
   } = user;
   const initialValues = {
     email,
@@ -48,37 +49,41 @@ function UpdateSoftwareProfile() {
     companyName,
     companyAbout,
     companyUrl,
-    companyStrength
+    companyStrength,
   };
 
   const [selectedImage, setProfileImage] = useState(null);
 
   const handleImageChange = (event, setFieldValue) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfileImage(reader.result);
-      setFieldValue("image", file);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setProfileImage(file);
   };
 
   const onSubmit = async (values, { setSubmitting }) => {
     // You can handle form submission here
-    const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("companyAbout", values.companyAbout);
-    formData.append("companyUrl", values.companyUrl);
-    formData.append("profileImage", values.image);
-    formData.append("phoneNo", values.phoneNo);
-    formData.append("address", values.address);
-    formData.append("companyName", values.companyName);
-    formData.append("companyStrength", values.companyStrength)
+    const {
+      firstName,
+      lastName,
+      companyUrl,
+      phoneNo,
+      address,
+      companyName,
+      companyStrength,
+    } = values;
 
     try {
-      const { message, data } = await updateProfile(formData).unwrap();
+      const result = await uploadImageToCloudinary(selectedImage);
+      const { message, data } = await updateProfile({
+        email,
+        firstName,
+        lastName,
+        companyUrl,
+        phoneNo,
+        address,
+        companyName,
+        companyStrength,
+        profileImage: result?.url,
+      }).unwrap();
       toast.success(message);
       storeCurrentUser({ ...user, ...data });
       navigate(PATH.SOFTWAREHOUSEHOME);
@@ -105,7 +110,11 @@ function UpdateSoftwareProfile() {
               <div className="mb-4 flex items-center justify-center">
                 <label htmlFor="image" className="cursor-pointer">
                   <img
-                    src={selectedImage ? selectedImage : profileImage}
+                    src={
+                      selectedImage
+                        ? URL.createObjectURL(selectedImage)
+                        : profileImage
+                    }
                     alt=""
                     className="w-20 h-20 rounded-full border border-gray-400"
                   />

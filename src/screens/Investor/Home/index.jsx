@@ -4,6 +4,7 @@ import { Loader } from '../../../components/Loader';
 import StudentCard from '../../../components/StudentCard';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../../utils/Path';
+import { Header } from '../../../components/Header';
 
 function InvestorHome() {
     const {data, isLoading} = useGetAllStudentsQuery();
@@ -14,6 +15,7 @@ function InvestorHome() {
     
   return (
     <div>
+      <Header/>
         <p className='text-center m-4 text-3xl font-mono'>Students</p>
         {isLoading ? (
         <div className="flex justify-center items-center">

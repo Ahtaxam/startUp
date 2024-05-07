@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../utils/Path";
 import { FaCamera } from "react-icons/fa";
 import { Button } from "flowbite-react";
+import uploadImageToCloudinary from "../../../utils/uploadCloudinary";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -50,14 +51,15 @@ function UpdateStudentProfile() {
 
   const handleImageChange = (event, setFieldValue) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfileImage(reader.result);
-      setFieldValue("image", file);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setProfileImage(file);
+    // const reader = new FileReader();
+    // reader.onloadend = () => {
+    //   setProfileImage(reader.result);
+    //   setFieldValue("image", file);
+    // };
+    // if (file) {
+    //   reader.readAsDataURL(file);
+    // }
   };
 
   const handleFileChange = (e) => {
@@ -65,22 +67,41 @@ function UpdateStudentProfile() {
   };
 
   const onSubmit = async (values, { setSubmitting }) => {
-    // You can handle form submission here
-    // e.stopPropagation()
-    console.log(values);
-    const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("firstName", values.firstName);
-    formData.append("lastName", values.lastName);
-    formData.append("profileImage", values.image);
-    formData.append("universityName", values.universityName);
-    formData.append("semester", values.semester);
-    formData.append("cgpa", values.cgpa);
-    formData.append("studentAbout", values.studentAbout);
-    formData.append("resume", cv);
+    const {
+      firstName,
+      lastName,
+      email,
+      universityName,
+      semester,
+      cgpa,
+      studentAbout,
+    } = values;
+    // const formData = new FormData();
+    // formData.append("email", values.email);
+    // formData.append("firstName", values.firstName);
+    // formData.append("lastName", values.lastName);
+    // formData.append("profileImage", values.image);
+    // formData.append("universityName", values.universityName);
+    // formData.append("semester", values.semester);
+    // formData.append("cgpa", values.cgpa);
+    // formData.append("studentAbout", values.studentAbout);
+    // formData.append("resume", cv);
 
     try {
-      const { message, data } = await updateProfile(formData).unwrap();
+      const profile = await uploadImageToCloudinary(selectedImage);
+      const cvLink = await uploadImageToCloudinary(cv);
+      const { message, data } = await updateProfile({
+        firstName,
+        lastName,
+        email,
+        universityName,
+        semester,
+        cgpa,
+        studentAbout,
+        profileImage: profile?.url,
+        resume: cvLink?.url,
+      }).unwrap();
+      console.log(data);
       toast.success(message);
       storeCurrentUser({ ...user, ...data });
       navigate(PATH.STUDENTHOME);
@@ -89,14 +110,30 @@ function UpdateStudentProfile() {
       toast.error("Server Error");
     }
 
-    // setSubmitting(false);
+    setSubmitting(false);
   };
   useEffect(() => {
-    // Set previously selected resume file when component mounts
     if (resume) {
       setCv(resume);
     }
   }, [resume]);
+
+  const handleDownloadResume = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    // Create a temporary URL for the blob
+    const urls = window.URL.createObjectURL(new Blob([blob]));
+    // Create a temporary anchor element
+    const link = document.createElement("a");
+    link.href = urls;
+    link.download = "resume.pdf"; // Set the filename for download
+    // Append the anchor to the document body
+    document.body.appendChild(link);
+    // Trigger the download
+    link.click();
+    // Clean up
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="max-w-md mx-auto h-[100vh] my-auto">
@@ -114,7 +151,11 @@ function UpdateStudentProfile() {
               <div className="mb-4 flex items-center justify-center">
                 <label htmlFor="image" className="cursor-pointer">
                   <img
-                    src={selectedImage ? selectedImage : profileImage}
+                    src={
+                      selectedImage
+                        ? URL.createObjectURL(selectedImage)
+                        : profileImage
+                    }
                     alt=""
                     className="w-20 h-20 rounded-full border border-gray-400"
                   />
@@ -287,9 +328,9 @@ function UpdateStudentProfile() {
                   {resume && (
                     <Button
                       className="float-end bg-sky-600"
-                      onClick={() => window.open(resume, "_blank")}
+                      onClick={() => handleDownloadResume(resume)}
                     >
-                      Preview Resume
+                      Resume
                     </Button>
                   )}
                 </label>
