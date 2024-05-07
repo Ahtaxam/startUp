@@ -76,13 +76,16 @@ function ProjectDetail() {
       <CustomModal openModal={open} setOpenModal={() => setOpen(!open)}>
         <HireMessage student={createdBy.email} Cancel={() => setOpen(!open)} />
       </CustomModal>
+      <p className=" font-bold font-inter text-center m-4 text-4xl">
+        Project Detail
+      </p>
+
       {isLoading ? (
         <div className="flex justify-center items-center m-4">
           <Loader />
         </div>
       ) : (
         <>
-          <p className=" font-bold font-inter text-center m-4 text-4xl">Project Detail</p>
           <div className="shadow-lg bg-white flex flex-col  p-4 my-4 mx-auto w-[94%] sm:w-[80%] rounded-lg ">
             <div className="flex justify-between">
               {role === "Software house" && (
