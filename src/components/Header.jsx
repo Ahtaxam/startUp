@@ -98,7 +98,7 @@ export function Header() {
               to={
                 role === "Student" ? PATH.STUDENTHOME : PATH.SOFTWAREHOUSEHOME
               }
-              active
+              
             >
               Home
             </Link>

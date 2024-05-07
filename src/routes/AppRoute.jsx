@@ -25,7 +25,6 @@ import UpdateInvestorProfile from "../screens/updateprofile/investor";
 
 function AppRoute() {
   const userrole = userRole();
-  console.log(userrole);
   return (
     <div>
       <Routes>
