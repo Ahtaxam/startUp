@@ -27,6 +27,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // hikadojow@mailinator.com
 const SoftwareHouseProfile = () => {
+  const [loading, setLoading] = useState(false);
   const user = getCurrentUser();
   const [softwareHouseProfile, { isLoading }] =
     useSoftwareHouseCompleteProfileMutation();
@@ -46,6 +47,7 @@ const SoftwareHouseProfile = () => {
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        setLoading(true);
         const { email, companyName, ownerName, address, phoneNo } = values;
         let images = [];
         try {
@@ -53,20 +55,23 @@ const SoftwareHouseProfile = () => {
             const imageUrl = await uploadImageToCloudinary(image);
             images.push(imageUrl?.url);
           }
-          const { message, token, data } = await softwareHouseProfile({
+          const { data, message, token } = await softwareHouseProfile({
             email,
             companyName,
             ownerName,
             address,
             phoneNo,
             images,
-          });
+          }).unwrap();
+
           storeCurrentUser({ ...user, ...data, token });
+          setLoading(false);
           if (data?.role === "Software house") {
             navigate(PATH.SOFTWAREHOUSEHOME);
           }
           toast.success(message);
         } catch (err) {
+          setLoading(false);
           console.log(err);
           toast.error(err.response.data.message);
         }
@@ -203,7 +208,7 @@ const SoftwareHouseProfile = () => {
             type="submit"
             class="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-5"
           >
-            {isLoading ? "updating..." : "update"}
+            {loading ? "updating..." : "update"}
           </button>
         </form>
       </div>

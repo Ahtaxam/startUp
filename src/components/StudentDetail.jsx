@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { getCurrentUser } from "../utils/storeUser";
 import { PATH } from "../utils/Path";
 import { Loader } from "./Loader";
+import Avatar from "../assets/images/avatar.png";
 
 function StudentDetail() {
   const [openModal, setOpenModal] = useState(false);
@@ -78,7 +79,6 @@ function StudentDetail() {
 
       {loading ? (
         <div className="flex justify-center items-center">
-
           <Loader />
         </div>
       ) : (
@@ -86,7 +86,7 @@ function StudentDetail() {
           <div className="flex justify-start m-4 gap-5">
             <div className=" flex flex-col items-center gap-4  border-2 rounded-lg p-4 max-w-[400px] ">
               <img
-                src="https://images.pexels.com/photos/206359/pexels-photo-206359.jpeg"
+                src={profileImage || Avatar}
                 className="w-[200px] h-[200px] rounded-full"
               />
               <p className="font-inter">
@@ -103,11 +103,13 @@ function StudentDetail() {
             </div>
           </div>
 
-          <div className="flex justify-center">
-            <Button onClick={() => setOpenModal(true)}>
-              Initiate Discussion
-            </Button>
-          </div>
+          {Projects.length > 0 && (
+            <div className="flex justify-center">
+              <Button onClick={() => setOpenModal(true)}>
+                Initiate Discussion
+              </Button>
+            </div>
+          )}
         </>
       )}
     </>
