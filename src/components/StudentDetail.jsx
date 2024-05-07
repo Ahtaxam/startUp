@@ -8,12 +8,13 @@ import { useSendInvestorEmailMutation } from "../redux/slices/SendEmail";
 import { toast } from "react-toastify";
 import { getCurrentUser } from "../utils/storeUser";
 import { PATH } from "../utils/Path";
+import { Loader } from "./Loader";
 
 function StudentDetail() {
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
   const { id } = useParams();
-  const { data } = useGetStudentProjectsQuery(id);
+  const { data, isLoading: loading } = useGetStudentProjectsQuery(id);
   const [sendInvestorEmail, { isLoading }] = useSendInvestorEmailMutation();
   const user = getCurrentUser();
   const navigate = useNavigate();
@@ -75,29 +76,40 @@ function StudentDetail() {
         Student Detail
       </p>
 
-      <div className="flex justify-start m-4 gap-5">
-        <div className=" flex flex-col items-center gap-4  border-2 rounded-lg p-4 max-w-[400px] ">
-          <img
-            src="https://images.pexels.com/photos/206359/pexels-photo-206359.jpeg"
-            className="w-[200px] h-[200px] rounded-full"
-          />
-          <p className="font-inter">
-            {firstName} {lastName} || {universityName}
-          </p>
-          <p className="font-inter"> {studentAbout} </p>
+      {loading ? (
+        <div className="flex justify-center items-center">
 
-          <p>{email}</p>
+          <Loader />
         </div>
-        <div className="flex-1">
-          {Projects.map((project, i) => (
-            <StudentProject project={project} key={i} />
-          ))}
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className="flex justify-start m-4 gap-5">
+            <div className=" flex flex-col items-center gap-4  border-2 rounded-lg p-4 max-w-[400px] ">
+              <img
+                src="https://images.pexels.com/photos/206359/pexels-photo-206359.jpeg"
+                className="w-[200px] h-[200px] rounded-full"
+              />
+              <p className="font-inter">
+                {firstName} {lastName} || {universityName}
+              </p>
+              <p className="font-inter"> {studentAbout} </p>
 
-      <div className="flex justify-center">
-        <Button onClick={() => setOpenModal(true)}>Initiate Discussion</Button>
-      </div>
+              <p>{email}</p>
+            </div>
+            <div className="flex-1">
+              {Projects.map((project, i) => (
+                <StudentProject project={project} key={i} />
+              ))}
+            </div>
+          </div>
+
+          <div className="flex justify-center">
+            <Button onClick={() => setOpenModal(true)}>
+              Initiate Discussion
+            </Button>
+          </div>
+        </>
+      )}
     </>
   );
 }

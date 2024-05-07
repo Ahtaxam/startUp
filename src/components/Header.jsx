@@ -33,9 +33,17 @@ export function Header() {
   };
   return (
     <Navbar fluid rounded className="shadow">
-      <Navbar.Brand href="https://flowbite-react.com">
+      <Link
+        to={
+          role === "Student"
+            ? PATH.STUDENTHOME
+            : role === "Investor"
+            ? PATH.INVESTORHOME
+            : PATH.SOFTWAREHOUSEHOME
+        }
+      >
         <img src={Logo} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-      </Navbar.Brand>
+      </Link>
       <div className="flex md:order-2">
         <Dropdown
           arrowIcon={false}
@@ -98,7 +106,6 @@ export function Header() {
               to={
                 role === "Student" ? PATH.STUDENTHOME : PATH.SOFTWAREHOUSEHOME
               }
-              
             >
               Home
             </Link>
