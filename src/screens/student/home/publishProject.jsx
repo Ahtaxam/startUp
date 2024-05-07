@@ -13,6 +13,7 @@ import {
   usePublishProjectsMutation,
 } from "../../../redux/slices/PublishProjects";
 import { getToken } from "../../../utils/storeUser";
+import uploadImageToCloudinary from "../../../utils/uploadCloudinary";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("title required"),
@@ -35,6 +36,7 @@ const KEYWORD = [
 
 const PublishProject = ({ setOpenModal }) => {
   const [publishProject, { isLoading }] = usePublishProjectsMutation();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const authToken = getToken();
@@ -48,44 +50,43 @@ const PublishProject = ({ setOpenModal }) => {
         projectLink: "",
         githubLink: "",
         images: [],
-        // studentName: "",
-        // universityName: "",
         keywords: [],
       },
       validationSchema: validationSchema,
       onSubmit: async (values, errors) => {
-        console.log(values);
-        const formData = new FormData();
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        formData.append("category", values.category);
-        values.keywords.forEach((keyword, index) => {
-          formData.append(`keywords[${index}]`, keyword); 
-        });
-        formData.append("projectLink", values.projectLink),
-          formData.append("githubLink", values.githubLink);
-        // formData.append("universityName", values.universityName);
-        // formData.append("studentName", values.studentName);
-        values.images.forEach((image, index) => {
-          formData.append(`images${index}`, image);
-        });
+        setLoading(true);
+        const {
+          title,
+          description,
+          category,
+          projectLink,
+          githubLink,
+          keywords,
+        } = values;
+        let images = [];
+
         try {
-          let result = await fetch(`${BASE_URL}project/publish`, {
-            method: "POST",
-            body: formData,
-            headers:{ 'Authorization': `Bearer ${authToken}` }
-          });
-          result = await result.json();
-          const { message, data, status } = result;
-          if (status === 400) {
-            toast.error(message);
-            return;
+          for (const image of values.images) {
+            const imageUrl = await uploadImageToCloudinary(image);
+            images.push(imageUrl?.url);
           }
 
+          const { message, data } = await publishProject({
+            title,
+            description,
+            category,
+            projectLink,
+            githubLink,
+            keywords,
+            images,
+          }).unwrap();
+
           toast.success(message);
-          dispatch(publishProjectApi.util.invalidateTags(["publishProject"]))
-          setOpenModal()
+          dispatch(publishProjectApi.util.invalidateTags(["publishProject"]));
+          setLoading(false);
+          setOpenModal();
         } catch (err) {
+          setLoading(false);
           console.log(err);
           toast.error(err.response.data.message);
         }
@@ -251,52 +252,11 @@ const PublishProject = ({ setOpenModal }) => {
             {touched.images && <ErrorMessage error={errors.images} />}
           </div>
 
-          {/* <div className="mb-5">
-            <label
-              htmlFor="studentName"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Student Name
-            </label>
-            <input
-              type="text"
-              id="studentName"
-              name="studentName"
-              className="outline-none text-gray-900 text-sm rounded-lg block w-full p-2"
-              placeholder="Enter Student Name"
-              value={values.studentName}
-              onChange={handleChange}
-            />
-            {touched.studentName && errors.studentName ? (
-              <ErrorMessage error={errors.studentName} />
-            ) : null}
-          </div>
-
-          <div className="mb-5">
-            <label
-              htmlFor="universityName"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              University Name
-            </label>
-            <input
-              type="text"
-              id="universityName"
-              name="universityName"
-              className="outline-none text-gray-900 text-sm rounded-lg block w-full p-2"
-              placeholder="Enter University Name"
-              value={values.universityName}
-              onChange={handleChange}
-            />
-            {touched.universityName && errors.universityName ? (
-              <ErrorMessage error={errors.universityName} />
-            ) : null}
-          </div> */}
           <button
             type="submit"
             className="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-5"
           >
-            {isLoading ? "Creating..." : "Create"}
+            {loading ? "Creating..." : "Create"}
           </button>
         </form>
       </div>
