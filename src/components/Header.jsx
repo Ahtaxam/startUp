@@ -92,7 +92,10 @@ export function Header() {
           Home
         </Link>
         {role === "Student" ? (
+          <>
           <Link to={PATH.JOBS}>Jobs</Link>
+          <Link to={PATH.INVESTORS}> Investors</Link>
+          </>
         ) : (
           <Link to={PATH.PROJECTS}>Projects</Link>
         )}

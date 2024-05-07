@@ -36,8 +36,9 @@ function StudentDetail() {
     console.log(email, user.email, message);
     try {
       const result = await sendInvestorEmail({
-        investor: "ahtashamali2727@gmail.com",
-        student: email,
+        sender: user.email,
+        receiver: email,
+        subject: "Startup Discussion Opportunity",
         message,
       }).unwrap();
       toast.success(result.message);

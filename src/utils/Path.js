@@ -15,5 +15,6 @@ export const PATH = {
   REVIEWS:"/reviews",
   INVESTORHOME:"/investor/home",
   STUDENTS:"/students",
-  STUDENTDETAIL:"/studentDetail/:id"
+  STUDENTDETAIL:"/studentDetail/:id",
+  INVESTORS:"/investors"
 };

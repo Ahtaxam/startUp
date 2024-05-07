@@ -9,6 +9,7 @@ import { sendEmailApi } from "./slices/SendEmail";
 import { softwareHouseApi } from "./slices/SoftwareHouse";
 import { reviewsApi } from "./slices/Reviews";
 import { allStudentsApi } from "./slices/Students";
+import { investorsApi } from "./slices/Investor";
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
@@ -17,8 +18,9 @@ export const store = configureStore({
     [publishProjectApi.reducerPath]: publishProjectApi.reducer,
     [sendEmailApi.reducerPath]: sendEmailApi.reducer,
     [softwareHouseApi.reducerPath]: softwareHouseApi.reducer,
-    [reviewsApi.reducerPath]:reviewsApi.reducer,
-    [allStudentsApi.reducerPath]:allStudentsApi.reducer
+    [reviewsApi.reducerPath]: reviewsApi.reducer,
+    [allStudentsApi.reducerPath]: allStudentsApi.reducer,
+    [investorsApi.reducerPath]: investorsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -29,7 +31,8 @@ export const store = configureStore({
       sendEmailApi.middleware,
       softwareHouseApi.middleware,
       reviewsApi.middleware,
-      allStudentsApi.middleware
+      allStudentsApi.middleware,
+      investorsApi.middleware
     ),
 });
 

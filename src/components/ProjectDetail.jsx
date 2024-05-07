@@ -156,7 +156,7 @@ function ProjectDetail() {
           <p className="font-bold">Project Images</p>
           <Carousel responsive={responsive}>
             {images.map((image) => (
-              <img src={image} alt="image" />
+              <img src={image} alt="image" className="w-[300px] h-[300px] object-fill" />
             ))}
           </Carousel>
         </div>
