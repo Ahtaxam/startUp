@@ -9,6 +9,7 @@ import { useSoftwareHouseCompleteProfileMutation } from "../../redux/slices/Auth
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getCurrentUser, storeCurrentUser } from "../../utils/storeUser";
+import uploadImageToCloudinary from "../../utils/uploadCloudinary";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -45,29 +46,22 @@ const SoftwareHouseProfile = () => {
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
-        const formData = new FormData();
-        formData.append("email", values.email);
-        formData.append("companyName", values.companyName);
-        formData.append("ownerName", values.ownerName);
-        formData.append("address", values.address);
-        formData.append("phoneNo", values.phoneNo);
-        values.images.forEach((image, index) => {
-          formData.append(`companyProfile${index}`, image);
-        });
+        const { email, companyName, ownerName, address, phoneNo } = values;
+        let images = [];
         try {
-          let result = await fetch(`${BASE_URL}profile/software`, {
-            method: "POST",
-
-            body: formData,
-          });
-          result = await result.json();
-          const { message, data, status, token } = result;
-          // console.log(data, status, token);
-          if (status === 400) {
-            toast.error(message);
-            return;
+          for (const image of values.images) {
+            const imageUrl = await uploadImageToCloudinary(image);
+            images.push(imageUrl?.url);
           }
-          storeCurrentUser({...user ,...data, token });
+          const { message, token, data } = await softwareHouseProfile({
+            email,
+            companyName,
+            ownerName,
+            address,
+            phoneNo,
+            images,
+          });
+          storeCurrentUser({ ...user, ...data, token });
           if (data?.role === "Software house") {
             navigate(PATH.SOFTWAREHOUSEHOME);
           }

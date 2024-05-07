@@ -19,9 +19,17 @@ export const updateProfileApi = createApi({
         body: data,
       }),
     }),
+
+    updateSoftwareHouseProfile: builder.mutation({
+      query: (data) => ({
+        url: "/profile/software",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
 
 
-export const {useUpdateProfileMutation} = updateProfileApi
+export const {useUpdateProfileMutation, useUpdateSoftwareHouseProfileMutation} = updateProfileApi
