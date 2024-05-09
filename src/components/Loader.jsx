@@ -1,5 +1,6 @@
-import { Spinner } from "flowbite-react";
+import DotLoader from "react-spinners/DotLoader";
+
 
 export function Loader() {
-  return <Spinner aria-label="Default status example" size="lg" />;
+  return <DotLoader color="#00215E" size={50}/>
 }
