@@ -101,7 +101,6 @@ function UpdateStudentProfile() {
         profileImage: profile?.url,
         resume: cvLink?.url,
       }).unwrap();
-      console.log(data);
       toast.success(message);
       storeCurrentUser({ ...user, ...data });
       navigate(PATH.STUDENTHOME);

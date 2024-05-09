@@ -37,7 +37,6 @@ function Jobdetail() {
     companyName,
     applications = [],
   } = data?.data?.[0] || {};
-  console.log(data?.data);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

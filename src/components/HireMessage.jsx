@@ -21,7 +21,6 @@ function HireMessage({ student, Cancel }) {
         address,
         phoneNo,
       }).unwrap();
-      console.log(result);
       toast.success("offer sent successfully");
       navigate(PATH.PROJECTS)
       Cancel()

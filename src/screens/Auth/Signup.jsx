@@ -45,7 +45,6 @@ const Signup = () => {
         }).unwrap();
         const { message, data, token } = result;
         toast.success(message);
-        console.log(data, token);
         storeCurrentUser({ ...data, token });
         if (data.role === "Software house") {
           navigate(PATH.SOFTWAREHOUSE);

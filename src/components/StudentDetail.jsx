@@ -19,7 +19,6 @@ function StudentDetail() {
   const [sendInvestorEmail, { isLoading }] = useSendInvestorEmailMutation();
   const user = getCurrentUser();
   const navigate = useNavigate();
-  // console.log(data?.data);
   const {
     firstName,
     lastName,
@@ -35,7 +34,6 @@ function StudentDetail() {
       toast.error("message can not be empty");
       return;
     }
-    console.log(email, user.email, message);
     try {
       const result = await sendInvestorEmail({
         sender: user.email,
