@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useGetAllInvestorsQuery } from "../../../redux/slices/Investor";
+import { useGetAllInvestorsQuery, useGetApprovedInvestorsQuery } from "../../../redux/slices/Investor";
 import { Header } from "../../../components/Header";
 import { Loader } from "../../../components/Loader";
 import InvestorCard from "../../../components/InvestorCard";
@@ -17,7 +17,7 @@ function Investors() {
   const [investorEmail, setInvestorEmail] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const user = getCurrentUser();
-  const { data, isLoading } = useGetAllInvestorsQuery();
+  const { data, isLoading } = useGetApprovedInvestorsQuery();
   const [sendFundingRequest, { isLoading: loading }] =
     useSendInvestorEmailMutation();
   const handleFundingRequest = (obj) => {

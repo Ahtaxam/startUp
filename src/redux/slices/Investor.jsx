@@ -18,7 +18,10 @@ export const investorsApi = createApi({
     getSingleInvestor: builder.query({
       query: (id) => `/investor/${id}`,
     }),
+    getApprovedInvestors: builder.query({
+      query: () => "/investor/approved"
+    })
   }),
 });
 
-export const { useGetAllInvestorsQuery, useGetSingleInvestorQuery } = investorsApi;
+export const { useGetAllInvestorsQuery, useGetSingleInvestorQuery , useGetApprovedInvestorsQuery} = investorsApi;

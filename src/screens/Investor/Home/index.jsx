@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../utils/Path";
 import { Header } from "../../../components/Header";
 
+const [searchText, setSearchText] = useState("");
+
 function InvestorHome() {
-  const [searchText, setSearchText] = useState("");
   const { data, isLoading } = useGetAllStudentsQuery();
+  const user = getCurrentUser();
   const navigate = useNavigate();
   const handleStudentDetails = (obj) => {
     navigate(`/studentDetail/${obj._id}`);
@@ -41,9 +43,14 @@ function InvestorHome() {
         <div className="flex justify-center items-center">
           <Loader />
         </div>
-      ) : filteredUsers && filteredUsers.length > 0 ? (
+      ) : user.status === "Pending" ? (
+        <p className="text-center font-bold">
+          Your Status is Pending. Can't perform any operation <br /> logout then
+          came after break{" "}
+        </p>
+      ) : (
         <div className=" p-2 grid grid-cols-1 sm:grid-cols-2  gap-4 mt-2 ]">
-          {filteredUsers.map((obj) => (
+          {data?.data.map((obj) => (
             <StudentCard
               data={obj}
               onClick={() => handleStudentDetails(obj)}
@@ -51,8 +58,6 @@ function InvestorHome() {
             ></StudentCard>
           ))}
         </div>
-      ) : (
-        <p className="text-center font-inter text-xl">No matching!</p>
       )}
     </div>
   );
