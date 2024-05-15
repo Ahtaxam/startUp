@@ -5,10 +5,11 @@ import StudentCard from "../../../components/StudentCard";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../utils/Path";
 import { Header } from "../../../components/Header";
+import { getCurrentUser } from "../../../utils/storeUser";
 
-const [searchText, setSearchText] = useState("");
 
 function InvestorHome() {
+  const [searchText, setSearchText] = useState("");
   const { data, isLoading } = useGetAllStudentsQuery();
   const user = getCurrentUser();
   const navigate = useNavigate();
