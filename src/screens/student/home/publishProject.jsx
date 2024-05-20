@@ -15,6 +15,7 @@ import {
 import { getToken } from "../../../utils/storeUser";
 import uploadImageToCloudinary from "../../../utils/uploadCloudinary";
 
+// validation schema
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("title required"),
   description: Yup.string().required("description is required"),

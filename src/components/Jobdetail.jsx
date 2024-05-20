@@ -89,6 +89,8 @@ function Jobdetail() {
         <>
           <div className="shadow-lg bg-white flex flex-col  p-4 my-4 mx-auto w-[94%] sm:w-[80%] rounded-lg ">
             <div className="flex justify-end">
+
+              {/* software house login */}
               {role === "Software house" ? (
                 <button
                   className="border bg-red-600 w-[150px] text-white rounded m-4 p-2"
@@ -97,6 +99,7 @@ function Jobdetail() {
                   Delete Job
                 </button>
               ) : (
+                // student login
                 <button
                   className="border bg-[#00215E] w-[150px] text-white  float-end rounded m-4 p-2"
                   onClick={handleApplyJob}

@@ -11,6 +11,8 @@ import AvatarLogo from "../../assets/images/avatar.png";
 import axios from "axios";
 import { storeCurrentUser } from "../../utils/storeUser";
 
+
+// signup validation schema
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("firstName is required"),
   lastName: Yup.string().required("lastName is required"),

@@ -20,8 +20,8 @@ function Card({ data, onClick }) {
   } = data;
   return (
     <div
-      className="bg-white shadow-lg p-4 w-full flex flex-col gap-4 cursor-pointer h-[100%] rounded-xl border border-[#1611401A] "
-      onClick={onClick}
+    className="bg-gradient-to-br from-[#614385] to-[#516395] shadow-lg p-6 w-full flex flex-col gap-4 cursor-pointer h-[100%] rounded-xl border border-transparent transition-transform duration-300 transform hover:scale-95 hover:shadow-2xl"
+    onClick={onClick}
     >
       {hasApplied && (
         <Badge color="purple" className="w-fit p-2">
@@ -96,3 +96,9 @@ function Card({ data, onClick }) {
 }
 
 export default Card;
+
+
+
+
+
+

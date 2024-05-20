@@ -5,6 +5,7 @@ import Image from "../../assets/images/startup1.jpg";
 function Home() {
   return (
     <div>
+      {/* header */}
       <Navbar />
       <div className="grid grid-cols-1 sm:grid-cols-2 items-center  gap-4 p-4">
         <div className="flex flex-col justify-center items-center text-center">

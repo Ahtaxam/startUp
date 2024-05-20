@@ -5,15 +5,15 @@ import { PATH } from "../utils/Path";
 
 function Navbar() {
   return (
-    <div className="flex justify-between items-center bg-white shadow p-4">
-      <div className="bg-white">
+    <div className="flex justify-between items-center bg-black shadow p-4">
+      <div className="">
         <img src={Logo} alt="logo" className="w-10" />
       </div>
       <div className="flex space-x-4 text-white items-center">
-        <Link to="/about" className="text-black">
+        <Link to="/about" className="text-white">
           Aboutus
         </Link>
-        <Link to={PATH.LOGIN} className="text-black">
+        <Link to={PATH.LOGIN} className="text-white">
           Login
         </Link>
         <Link to={PATH.SIGNUP} className="text-black">

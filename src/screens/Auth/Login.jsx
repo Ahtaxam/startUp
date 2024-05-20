@@ -8,6 +8,7 @@ import { useLoginUserMutation } from "../../redux/slices/Auth";
 import { toast } from "react-toastify";
 import { storeCurrentUser } from "../../utils/storeUser";
 
+// validation schema
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
@@ -25,6 +26,8 @@ const Login = () => {
       password: "",
     },
     validationSchema: validationSchema,
+
+    // when click submit button api call
     onSubmit: async (values) => {
       try {
         const result = await loginUser(values).unwrap();

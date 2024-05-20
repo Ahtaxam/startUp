@@ -7,6 +7,7 @@ import { Header } from "../../../components/Header";
 
 function Jobs() {
   const [searchText, setSearchText] = useState("");
+  // fetch all jobs from database
   const { data, isLoading } = useGetAllJobsQuery();
   const navigate = useNavigate();
 
@@ -17,6 +18,7 @@ function Jobs() {
     setSearchText(e.target.value);
   };
 
+  // filter jobs based on title
   const filteredJobs = data?.data.filter((job) =>
     job.title.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -24,6 +26,8 @@ function Jobs() {
     <div>
       <Header />
       <p className="font-inter text-center text-2xl font-bold m-4">Jobs</p>
+
+      {/* search bar */}
       <div className="flex m-4">
         <input
           type="search"
@@ -33,6 +37,8 @@ function Jobs() {
           onChange={handleSearchJob}
         />
       </div>
+
+      {/* render data on screens */}
       {isLoading ? (
         <div className="flex justify-center items-center">
           <Loader />

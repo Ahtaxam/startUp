@@ -17,14 +17,20 @@ function Investors() {
   const [investorEmail, setInvestorEmail] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const user = getCurrentUser();
+
+  // get all approved investor from databsed
   const { data, isLoading } = useGetApprovedInvestorsQuery();
   const [sendFundingRequest, { isLoading: loading }] =
     useSendInvestorEmailMutation();
+
+    // open modal to send message to investors
   const handleFundingRequest = (obj) => {
     setOpenModal(true);
     setInvestorEmail(obj.email);
   };
 
+
+  // when click student can send message to investors handler
   const handleSendMessage = async () => {
     if (studentMessage === "") {
       toast.error("Please write your message");
@@ -68,6 +74,7 @@ function Investors() {
         </CustomModal>
         <Header />
         <p className="font-inter text-center text-2xl font-bold m-4">Investors</p>
+        {/* render all inmvestors  */}
         {isLoading ? (
           <div className="flex justify-center items-center">
             <Loader />

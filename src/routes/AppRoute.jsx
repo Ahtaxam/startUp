@@ -23,6 +23,8 @@ import StudentDetail from "../components/StudentDetail";
 import Investors from "../screens/student/investors";
 import UpdateInvestorProfile from "../screens/updateprofile/investor";
 
+
+// applications routes
 function AppRoute() {
   const userrole = userRole();
   return (

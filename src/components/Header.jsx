@@ -32,94 +32,100 @@ export function Header() {
     navigate("/");
   };
   return (
-    <Navbar fluid rounded className="shadow">
-      <Link
-        to={
-          role === "Student"
-            ? PATH.STUDENTHOME
-            : role === "Investor"
-            ? PATH.INVESTORHOME
-            : PATH.SOFTWAREHOUSEHOME
-        }
-      >
-        <img src={Logo} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-      </Link>
-      <div className="flex md:order-2">
-        <Dropdown
-          arrowIcon={false}
-          inline
-          label={<Avatar alt="User settings" img={profileImage} rounded />}
+      <Navbar fluid rounded className="shadow bg-black text-white">
+        <Link
+          to={
+            role === "Student"
+              ? PATH.STUDENTHOME
+              : role === "Investor"
+              ? PATH.INVESTORHOME
+              : PATH.SOFTWAREHOUSEHOME
+          }
         >
-          <Dropdown.Header>
-            <span className="block text-sm">
-              {" "}
-              {firstName + " " + lastName}{" "}
-            </span>
-            <span className="block truncate text-sm font-medium">{email}</span>
-          </Dropdown.Header>
-          <Dropdown.Item>
-            {" "}
-            <Link
-              to={
-                role === "Software house"
-                  ? PATH.SOFTWAREHOUSEHOME
-                  : PATH.STUDENTHOME
-              }
-            >
-              {" "}
-              Dashboard
-            </Link>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Link
-              to={
-                role === "Student"
-                  ? PATH.UPDATESTUDENTPROFILE
-                  : role === "Investor"
-                  ? PATH.UPDATEINVESTORPROFILE
-                  : PATH.UPDATESOFTWAREPROFILE
-              }
-            >
-              Update Profile
-            </Link>
-          </Dropdown.Item>
-          {role === "Student" && (
-            <Dropdown.Item>
-              <Link to={PATH.REVIEWS}>Reviews</Link>
-            </Dropdown.Item>
-          )}
-          <Dropdown.Divider />
-          <Dropdown.Item
-            className="text-red-600 font-bold"
-            onClick={handleLogout}
+          <img
+            src={Logo}
+            className="mr-3 h-6 sm:h-9 bg-white"
+            alt="Flowbite React Logo"
+          />
+        </Link>
+        <div className="flex md:order-2">
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={<Avatar alt="User settings" img={profileImage} rounded />}
           >
-            Sign out
-          </Dropdown.Item>
-        </Dropdown>
-        <Navbar.Toggle />
-      </div>
-      <Navbar.Collapse>
-        {role !== "Investor" && (
-          <>
-            {" "}
-            <Link
-              to={
-                role === "Student" ? PATH.STUDENTHOME : PATH.SOFTWAREHOUSEHOME
-              }
-            >
-              Home
-            </Link>
-            {role === "Student" ? (
-              <>
-                <Link to={PATH.JOBS}>Jobs</Link>
-                <Link to={PATH.INVESTORS}> Investors</Link>
-              </>
-            ) : (
-              <Link to={PATH.PROJECTS}>Projects</Link>
+            <Dropdown.Header>
+              <span className="block text-sm">
+                {" "}
+                {firstName + " " + lastName}{" "}
+              </span>
+              <span className="block truncate text-sm font-medium">
+                {email}
+              </span>
+            </Dropdown.Header>
+            <Dropdown.Item>
+              {" "}
+              <Link
+                to={
+                  role === "Software house"
+                    ? PATH.SOFTWAREHOUSEHOME
+                    : PATH.STUDENTHOME
+                }
+              >
+                {" "}
+                Dashboard
+              </Link>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Link
+                to={
+                  role === "Student"
+                    ? PATH.UPDATESTUDENTPROFILE
+                    : role === "Investor"
+                    ? PATH.UPDATEINVESTORPROFILE
+                    : PATH.UPDATESOFTWAREPROFILE
+                }
+              >
+                Update Profile
+              </Link>
+            </Dropdown.Item>
+            {role === "Student" && (
+              <Dropdown.Item>
+                <Link to={PATH.REVIEWS}>Reviews</Link>
+              </Dropdown.Item>
             )}
-          </>
-        )}
-      </Navbar.Collapse>
-    </Navbar>
+            <Dropdown.Divider />
+            <Dropdown.Item
+              className="text-red-600 font-bold"
+              onClick={handleLogout}
+            >
+              Sign out
+            </Dropdown.Item>
+          </Dropdown>
+          <Navbar.Toggle />
+        </div>
+        <Navbar.Collapse>
+          {role !== "Investor" && (
+            <>
+              {" "}
+              <Link
+                to={
+                  role === "Student" ? PATH.STUDENTHOME : PATH.SOFTWAREHOUSEHOME
+                }
+              >
+                Home
+              </Link>
+              {role === "Student" ? (
+                <>
+                  <Link to={PATH.JOBS}>Jobs</Link>
+                  <Link to={PATH.INVESTORS}> Investors</Link>
+                </>
+              ) : (
+                <Link to={PATH.PROJECTS}>Projects</Link>
+              )}
+            </>
+          )}
+        </Navbar.Collapse>
+      </Navbar>
   );
 }
