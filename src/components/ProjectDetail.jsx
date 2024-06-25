@@ -35,8 +35,13 @@ function ProjectDetail() {
   const role = userRole();
   const [seeMore, setSeeMore] = useState(true);
   const [open, setOpen] = useState();
+
   const { id } = useParams();
+
+// get project detail
   const { data, isLoading } = useGetSingleProjectQuery(id);
+
+
   //   const [deleteJob, { isLoading: loading }] = use();
   const {
     title = "",
@@ -109,6 +114,8 @@ function ProjectDetail() {
               </div>
             </div>
 
+            {/* see more or less button */}
+
             <div className="mt-4">
               <p className="font-bold">Description</p>
               <p className="font-inter">
@@ -164,6 +171,8 @@ function ProjectDetail() {
                 <p className="font-inter">{projectLink}</p>
               </div>
             )}
+
+            {/* projects images carousel */}
             <div className="mt-4">
               <p className="font-bold">Project Images</p>
               <Carousel responsive={responsive}>

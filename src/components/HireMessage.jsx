@@ -11,6 +11,8 @@ function HireMessage({ student, Cancel }) {
   const user = getCurrentUser();
   const navigate = useNavigate();
   const { email, companyName, phoneNo, address } = user;
+
+  // method to send offer to students
   const handleSendOffer = async () => {
     try {
       const result = await sendEmail({
@@ -31,12 +33,15 @@ function HireMessage({ student, Cancel }) {
   };
   return (
     <div>
+      {/* message to send */}
       <textarea
         placeholder="Please write your message"
         className="w-full"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       ></textarea>
+
+      {/* send offer button */}
       <div className="flex justify-center">
         <button
           className="border bg-[#00215E] p-2 rounded text-white w-[150px]"

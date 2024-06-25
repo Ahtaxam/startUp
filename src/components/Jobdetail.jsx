@@ -21,10 +21,17 @@ function Jobdetail() {
   const role = userRole();
   const user = getCurrentUser();
   const [open, setOpen] = useState();
+
+  // fetch id from url
   const { id } = useParams();
+
+  // get singkle job detail
   const { data, isLoading } = useGetSingleJobQuery(id);
+
   const [deleteJob, { isLoading: loading }] = useDeleteJobMutation();
   const [applyJob, { isLoading: applyLoading }] = useApplyjobMutation();
+
+  // destructure data
   const {
     _id = "",
     title = "",
@@ -44,6 +51,8 @@ function Jobdetail() {
   const handleDeleteButton = () => {
     setOpen(true);
   };
+
+  // handle delete job method
   const handleDeleteJob = async () => {
     try {
       const { message } = await deleteJob(id).unwrap();
@@ -55,6 +64,7 @@ function Jobdetail() {
     }
     setOpen(false);
   };
+
   const handleApplyJob = async () => {
     try {
       const { message } = await applyJob({
@@ -89,9 +99,9 @@ function Jobdetail() {
         <>
           <div className="shadow-lg bg-white flex flex-col  p-4 my-4 mx-auto w-[94%] sm:w-[80%] rounded-lg ">
             <div className="flex justify-end">
-
               {/* software house login */}
               {role === "Software house" ? (
+                // delete job button
                 <button
                   className="border bg-red-600 w-[150px] text-white rounded m-4 p-2"
                   onClick={handleDeleteButton}
@@ -164,6 +174,7 @@ function Jobdetail() {
             </div>
           </div>
 
+          {/* job applications */}
           {role === "Software house" && (
             <>
               {" "}

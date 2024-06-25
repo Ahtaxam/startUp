@@ -1,6 +1,8 @@
 import React from "react";
 
 function ProjectCard({ data, onClick }) {
+
+  // destructure project properties
   const {
     title,
     description,

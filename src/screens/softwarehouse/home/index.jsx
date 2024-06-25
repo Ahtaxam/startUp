@@ -11,7 +11,9 @@ import { PATH } from "../../../utils/Path";
 
 function SoftwareHouseHome() {
   const [openModal, setOpenModal] = useState(false);
+  // fetch jobs from server
   const { data, isLoading, error } = useGetCreatedJobQuery();
+
   const navigate = useNavigate();
   const handleClick = () => {
     setOpenModal(true);
@@ -23,18 +25,23 @@ function SoftwareHouseHome() {
   return (
     <div>
       <Header />
+      {/* render modal */}
       <CustomModal
         openModal={openModal}
         setOpenModal={() => setOpenModal(!openModal)}
       >
         <CreateJob setOpenModal={() => setOpenModal(false)} />
       </CustomModal>
+      {/* create job button */}
       <Button onClick={handleClick}>Create Job</Button>
+
+      {/* if loading show loader */}
       {isLoading ? (
         <div className="flex justify-center items-center">
           <Loader />
         </div>
       ) : (
+        // if data is present render data
         <div className=" p-2 grid grid-cols-1 sm:grid-cols-2  gap-4 mt-2 ]">
           {data?.data.map((obj) => (
             <Card

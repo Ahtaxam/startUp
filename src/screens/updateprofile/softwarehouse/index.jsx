@@ -72,7 +72,9 @@ function UpdateSoftwareProfile() {
     } = values;
 
     try {
+      // store image to cloudinary
       const result = await uploadImageToCloudinary(selectedImage);
+      
       const { message, data } = await updateProfile({
         email,
         firstName,
@@ -99,6 +101,7 @@ function UpdateSoftwareProfile() {
       <h1 className="text-2xl font-semibold mb-4 text-center mt-4">
         Update Profile
       </h1>
+      {/* use forkin to handle form */}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -107,6 +110,8 @@ function UpdateSoftwareProfile() {
         {({ isSubmitting, setFieldValue }) => {
           return (
             <Form>
+
+              {/* profile image  */}
               <div className="mb-4 flex items-center justify-center">
                 <label htmlFor="image" className="cursor-pointer">
                   <img

@@ -11,7 +11,6 @@ import AvatarLogo from "../../assets/images/avatar.png";
 import axios from "axios";
 import { storeCurrentUser } from "../../utils/storeUser";
 
-
 // signup validation schema
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("firstName is required"),
@@ -41,20 +40,26 @@ const Signup = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
+        // send data to server
         const result = await createUser({
           ...values,
           role: ROLE[selectedRole],
         }).unwrap();
+
         const { message, data, token } = result;
         toast.success(message);
+
+        // store current user
         storeCurrentUser({ ...data, token });
+
+        // if software house complete profile route
         if (data.role === "Software house") {
           navigate(PATH.SOFTWAREHOUSE);
-          return
+          return;
         }
-        // if (data.role === "Student") {
-          navigate(PATH.LOGIN);
-        // }
+
+        // redirect to login
+        navigate(PATH.LOGIN);
       } catch (err) {
         console.log(err);
         toast.error(err.data.message);
@@ -194,6 +199,8 @@ const Signup = () => {
               ))}
             </div>
           </div>
+
+          {/* signup button */}
           <button
             type="submit"
             className="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "

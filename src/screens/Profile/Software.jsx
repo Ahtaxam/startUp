@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import { getCurrentUser, storeCurrentUser } from "../../utils/storeUser";
 import uploadImageToCloudinary from "../../utils/uploadCloudinary";
 
+
+// validation schema
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const validationSchema = Yup.object().shape({
@@ -50,11 +52,17 @@ const SoftwareHouseProfile = () => {
         setLoading(true);
         const { email, companyName, ownerName, address, phoneNo } = values;
         let images = [];
+
         try {
+
+          // store images to cloudinary and retrurn their urls
           for (const image of values.images) {
             const imageUrl = await uploadImageToCloudinary(image);
             images.push(imageUrl?.url);
           }
+
+
+          // store data to server
           const { data, message, token } = await softwareHouseProfile({
             email,
             companyName,
@@ -78,6 +86,8 @@ const SoftwareHouseProfile = () => {
       },
     });
 
+
+    // select images
   const handleImageChange = (e) => {
     console.log(e);
     if (e.target.files) {
@@ -88,6 +98,8 @@ const SoftwareHouseProfile = () => {
     }
   };
 
+
+  // delete selected image
   const handleDeleteImage = (id) => {
     const images = values.images.filter((_, i) => i !== id);
     setFieldValue("images", images);
@@ -188,6 +200,7 @@ const SoftwareHouseProfile = () => {
             ) : null}
           </div>
 
+          {/* upload company images */}
           <div class="mb-5">
             <label
               for="images"
@@ -204,6 +217,7 @@ const SoftwareHouseProfile = () => {
           </div>
           {/* <input type="file" onChange={(e) => console.log(e)}/> */}
 
+          {/* update profile */}
           <button
             type="submit"
             class="text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mb-5"

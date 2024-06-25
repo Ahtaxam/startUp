@@ -8,7 +8,7 @@ import { useLoginUserMutation } from '../../redux/slices/Auth';
 import { toast } from 'react-toastify';
 import { storeCurrentUser } from '../../utils/storeUser';
 
-// validation schema
+// validation schema for login
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string()
@@ -30,22 +30,27 @@ const Login = () => {
     // when click submit button api call
     onSubmit: async (values) => {
       try {
+        // send data ton server
         const result = await loginUser(values).unwrap();
+
         const { message, token, data } = result;
         toast.success(message);
         storeCurrentUser({ ...data, token });
-        if (data?.role === 'Student') {
+
+        // role based redirection
+        if (data?.role === "Student") {
           navigate(PATH.STUDENTHOME);
           return;
         }
-        if (data?.role === 'Software house') {
+        if (data?.role === "Software house") {
           navigate(PATH.SOFTWAREHOUSEHOME);
           return;
         }
-        if (data?.role === 'Investor') {
+        if (data?.role === "Investor") {
           navigate(PATH.INVESTORHOME);
           return;
         }
+        // store current logged user
         storeCurrentUser({
           email: data.email,
           firstName: data.firstName,
@@ -64,8 +69,9 @@ const Login = () => {
       <div className=' p-4 rounded flex h-full flex-col justify-center flex-1 space-y-4 md:space-y-6'>
         <h1 className='text-center font-bold text-xl'>Login</h1>
         <form onSubmit={handleSubmit}>
-          <div className='mb-5'>
-            <label for='email' className='block mb-2 text-sm font-medium'>
+          {/* email */}
+          <div className="mb-5">
+            <label for="email" className="block mb-2 text-sm font-medium">
               Your email
             </label>
             <input
@@ -81,7 +87,8 @@ const Login = () => {
               <ErrorMessage error={errors.email} />
             ) : null}
           </div>
-          <div className='mb-5'>
+          {/* password */}
+          <div className="mb-5">
             <label
               for='password'
               className='block mb-2 text-sm font-medium text-gray-900'
@@ -102,11 +109,12 @@ const Login = () => {
             ) : null}
           </div>
 
+          {/* login button */}
           <button
             type='submit'
             className='text-white bg-blue-700 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center '
           >
-            {isLoading ? 'Logging...' : 'Login'}
+            {isLoading ? "Logging..." : "Login"}
           </button>
         </form>
         <p className='text-right mt-2'>

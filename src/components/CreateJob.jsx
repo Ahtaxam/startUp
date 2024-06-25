@@ -10,6 +10,8 @@ import { createJobApi, useCreateJobMutation } from "../redux/slices/CreateJob";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "../utils/storeUser";
 
+
+// create job validation schema
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("title required"),
   description: Yup.string().required("description is required"),
@@ -33,6 +35,8 @@ const validationSchema = Yup.object().shape({
 });
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+
+// job type filed
 const JOBType = ["Full-Time", "Part-Time", "Internship", "Contract"]
 
 const CreateJob = ({ setOpenModal }) => {
@@ -56,6 +60,7 @@ const CreateJob = ({ setOpenModal }) => {
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        // hit api's
         try {
           const { message, data } = await createJob(values).unwrap();
           toast.success(message);
